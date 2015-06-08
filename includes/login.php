@@ -1,6 +1,3 @@
-<?php 
-
-?>
 
 <!doctype html>
 <html class="no-js" lang="">
@@ -26,7 +23,7 @@
             <p>You invonce start point</p>
             <p>Login in. To see it in action.</p>
             <div id="errortext"></div>
-            <form class="m-t" role="form" id="form" action="auth.php" method="post" autocomplete="off" onsubmit="ajaxAuth(this, 'login'); return false;">
+            <form class="m-t" role="form" id="form" action="index.php" method="post" onsubmit="ajaxPost(this);">
                 <div class="form-group">
                     <input type="text" class="form-control" name="username" placeholder="Username" id="username" required>
                 </div>
@@ -36,7 +33,7 @@
                 <input type="submit" class="btn btn-primary block btn-block m-b" value="Login">
 
                 <p class="text-muted text-center"><small>Do not have an account?</small></p>
-                <a class="btn btn-sm btn-white btn-block" href="index.php">Create an account</a>
+                <a class="btn btn-sm btn-white btn-block" href="register.php">Create an account</a>
             </form>
             <p class="m-t"> <small>OSU CS290 - Rachelle Robinett &copy;2015</small> </p>
         </div>

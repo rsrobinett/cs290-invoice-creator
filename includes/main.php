@@ -1,18 +1,6 @@
-<?php
-error_reporting(E_ALL);
-ini_set("display_errors", 1);
-
-require_once 'functions.php';
-require_once 'src/dbCredentials.php';
-require_once 'src/dbConnection.php';
-
-session_start();
-
-//prevent navigation to main page if not logged in
-if(($_SERVER['REQUEST_METHOD'] != 'POST') && !isset($_SESSION['username'])){
-    echo "you aren't logged in";
-    redirect('auth.html?action=logout');
-}
+<?php require('includes/db.php'); 
+//if not logged in redirect to login page
+if(!$user->is_logged_in()){ header('Location: login.php'); } 
 ?>
 
 <!doctype html>
@@ -37,13 +25,7 @@ if(($_SERVER['REQUEST_METHOD'] != 'POST') && !isset($_SESSION['username'])){
                 <ul class="nav" id="side-menu" style="display: block;">
                     <li class="nav-header">
                         <p>
-                            <?php
-    echo $_SESSION['username'];
-    // echo "userID:".getUserIDFromUserName($mysqli, $db);
-//   printCompanyInfo($mysqli, $db);
-?>
-
-                            <strong class="font-bold">Andres Antista</strong>
+                            <strong class="font-bold"><?php echo $_SESSION['username']; ?></strong>
                         </p>
                     </li>
                     <li class="active">

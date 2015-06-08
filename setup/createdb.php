@@ -56,13 +56,13 @@ function createCompanyTable($mysqli, $db){
     $createtablesql = "CREATE TABLE $db.company (
     companyid INT NOT NULL AUTO_INCREMENT 
     , userid INT
-    , companyname VARCHAR( 255 ) NOT NULL 
-    , firstname VARCHAR( 255 ) NOT NULL
-    , lastname VARCHAR( 255 ) NOT NULL
-    , address VARCHAR( 255 ) NOT NULL
+    , name VARCHAR( 255 ) NOT NULL 
+    , streetaddress VARCHAR( 255 ) 
+    , state VARCHAR( 255 ) 
+    , zip INT
     , PRIMARY KEY(companyid)
     , FOREIGN KEY (userid) REFERENCES user(userid)
-    , UNIQUE (companyname))";
+    , UNIQUE (name))";
     if($mysqli->query($createtablesql)){
         echo "Created Company Table";
     } else {

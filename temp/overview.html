@@ -1,20 +1,3 @@
-<?php
-error_reporting(E_ALL);
-ini_set("display_errors", 1);
-
-require_once 'functions.php';
-require_once 'src/dbCredentials.php';
-require_once 'src/dbConnection.php';
-
-session_start();
-
-//prevent navigation to main page if not logged in
-if(($_SERVER['REQUEST_METHOD'] != 'POST') && !isset($_SESSION['username'])){
-    echo "you aren't logged in";
-    redirect('auth.html?action=logout');
-}
-?>
-
 <!doctype html>
 <html class="no-js" lang="">
 
@@ -22,7 +5,7 @@ if(($_SERVER['REQUEST_METHOD'] != 'POST') && !isset($_SESSION['username'])){
     <meta charset="utf-8">
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>FACTURA+ Overview</title>
+    <title>FACTURA+ Login</title>
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
     
     <link rel="stylesheet" href="styles/main.css">
@@ -37,12 +20,6 @@ if(($_SERVER['REQUEST_METHOD'] != 'POST') && !isset($_SESSION['username'])){
                 <ul class="nav" id="side-menu" style="display: block;">
                     <li class="nav-header">
                         <p>
-                            <?php
-    echo $_SESSION['username'];
-    // echo "userID:".getUserIDFromUserName($mysqli, $db);
-//   printCompanyInfo($mysqli, $db);
-?>
-
                             <strong class="font-bold">Andres Antista</strong>
                         </p>
                     </li>
@@ -69,7 +46,7 @@ if(($_SERVER['REQUEST_METHOD'] != 'POST') && !isset($_SESSION['username'])){
                             <span class="m-r-sm text-muted welcome-message">Welcome to FACTURA+</span>
                         </li>
                         <li>
-                            <a href="<?php echo getPath().'/?action=logout'?>">
+                            <a href="index.html">
                                 <i class="fa fa-sign-out"></i> Log out
                             </a>
                         </li>
