@@ -26,26 +26,35 @@ if($_POST['action'] === "createinvoice"){
         $senderid = $_POST['senderid'];
     } else if (isset($_SESSION['username'])){
         $senderid = getCompanyIDbyUsername($_SESSION['username']);
+    } else {
+        $errormsg = $errormsg."A Sender Company Id is needed to add an invoice";
     }
     
     if(isset($_POST['billtoid'])){
         $billtoid = $_POST['billtoid'];
     } else {
-        exit("you must select a company to send your invoice to");
+        $errormsg = $errormsg."you must select a company to send your invoice to. ";
     }
     if(isset($_POST['invoicedate'])){
         $invoicedate = $_POST['invoicedate'];
+    }else {
+        $errormsg = $errormsg."An invoice date is required to create an invoice.  ";
     }
     if(isset($_POST['duedate'])){
         $duedate = $_POST['duedate'];
+    } else {
+        $errormsg = $errormsg."An due date is required to create an invoice.  ";
     }
     if(isset($_POST['comment'])){
         $comment = $_POST['comment'];
     }
     
+    if(empty($errormsg)){
     createInvoice($senderid, $billtoid, $invoicedate, $duedate, $comment);
-    //createInvoice(1, 1, "5-6-2015", "7-15-2016", "comment goes here");
-    exit("success");    
+    exit("success"); 
+    }
+    
+    exit($errormsg);
 }
 
 if($_POST['action'] === "createitem"){

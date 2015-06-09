@@ -12,6 +12,25 @@ if(!isset($_SESSION['username'])){
     redirect('index.php');
 }
 
+
+
+function createInvoiceTable($username){
+    $invoicearray = readInvoicesBySenderID(getCompanyIDbyUsername($username)); 
+    foreach($invoicearray as $index => $invoice){
+        echo "<tr>";
+        echo "<td> $invoice[lastupdated] </td>";
+        echo "<td> $invoice[invoiceid] </td>";
+        echo "<td> $invoice[billtoname] </td>";
+        echo "<td> <span class='label'> $invoice[status] </span> </td>";
+        echo "<td> $invoice[total] </td>";
+        echo '<td>
+            <div class="invoice-actions">
+                <a href="#"><i class="fa fa-pencil fa-2x"></i></a><a href="#"><i class="fa fa-trash fa-2x"></i></a>    
+            </div></td></tr>';
+    }
+}
+
+
 ?>
 
 <!doctype html>
@@ -93,6 +112,7 @@ if(!isset($_SESSION['username'])){
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        <?php createInvoiceTable($_SESSION['username']);?>
                                         <tr>
                                             <td>
                                             Jun 7th, 2015

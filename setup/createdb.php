@@ -74,6 +74,8 @@ function createInvoiceTable($mysqli, $db){
     , invoicedate DATETIME NOT NULL
     , duedate DATETIME NOT NULL
     , comment VARCHAR( 255 ) 
+    , status INT NOT NULL
+    , lastupdated DATETIME NOT NULL
     , PRIMARY KEY (invoiceid)
     , FOREIGN KEY (senderid) REFERENCES company(companyid)
     , FOREIGN KEY (billtoid) REFERENCES company(companyid))";
