@@ -98,11 +98,20 @@ function createCompany($companyname, $userid){
 
     //Read
 
-function readInvoicesBySenderID($senderid){
+function getInvoicesBySenderID($senderid){
     global $mysqli;
     global $db; 
     
-    if(!($stmt = $mysqli->prepare("SELECT invoiceid, c.name as billtoname, duedate, status, lastupdated, 1000 as total 
+    if(!($stmt = $mysqli->prepare("SELECT invoiceid, c.name as billtoname
+                                    , DATE_FORMAT(duedate, '%M %D, %Y') as duedate
+                                    , DATE_FORMAT(invoicedate, '%M %D, %Y') as invoicedate
+                                    , CASE status
+                                    WHEN 0 THEN 'Draft'
+                                    WHEN 1 THEN 'Paid'
+                                    WHEN 2 THEN 'Pending'
+                                    END
+                                    , DATE_FORMAT(lastupdated, '%M %D, %Y') as lastupdated
+                                    , 1000 as total 
                                     FROM $db.invoice inv
                                     LEFT JOIN $db.company c on inv.billtoid = c.companyid
                                     WHERE senderid = ?
@@ -121,13 +130,14 @@ function readInvoicesBySenderID($senderid){
     $invoiceid = null;
     $billtoname = null;
     $duedate = null;
+    $invoicedate = null;
     $status = null;
     $lastupdated = null;
     $total = null;
     
     
     
-    if (!$stmt->bind_result($invoiceid,$billtoname,$duedate,$status,$lastupdated,$total)) {
+    if (!$stmt->bind_result($invoiceid,$billtoname,$duedate,$invoicedate,$status,$lastupdated,$total)) {
         echo "<div class='error'>Binding results failed: (" . $stmt->errno . ") " . $stmt->error. "</div>";
     }    
     
@@ -135,7 +145,7 @@ function readInvoicesBySenderID($senderid){
     
     while($stmt->fetch()){
         $invoice = array();
-        $invoice = ['lastupdated'=>$lastupdated,'invoiceid'=>$invoiceid,'billtoname'=>$billtoname,'duedate'=>$duedate,'status'=>$status,'total'=>$total];
+        $invoice = ['lastupdated'=>$lastupdated,'invoiceid'=>$invoiceid,'billtoname'=>$billtoname,'duedate'=>$duedate, 'invoicedate'=>$invoicedate,'status'=>$status,'total'=>$total];
         $invoicearray[]=$invoice;
         }
 

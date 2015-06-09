@@ -15,7 +15,7 @@ if(!isset($_SESSION['username'])){
 
 
 function createInvoiceTable($username){
-    $invoicearray = readInvoicesBySenderID(getCompanyIDbyUsername($username)); 
+    $invoicearray = getInvoicesBySenderID(getCompanyIDbyUsername($username)); 
     foreach($invoicearray as $index => $invoice){
         echo "<tr>";
         echo "<td> $invoice[lastupdated] </td>";
