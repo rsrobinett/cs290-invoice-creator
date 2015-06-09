@@ -30,6 +30,28 @@ function createInvoiceTable($username){
     }
 }
 
+//move to recived when it's created
+/*
+function createReceivedInvoiceTable($username){
+    $invoicearray = getInvoicesByBilltoID(getCompanyIDbyUsername($username)); 
+    echo "<table>";
+    foreach($invoicearray as $index => $invoice){
+        echo "<tr>";
+        echo "<td> $invoice[lastupdated] </td>";
+        echo "<td> $invoice[invoiceid] </td>";
+        echo "<td> $invoice[sendername] </td>";
+        echo "<td> <span class='label'> $invoice[status] </span> </td>";
+        echo "<td> $invoice[total] </td>";
+        echo '<td>
+            <div class="invoice-actions">
+                <a href="#"><i class="fa fa-pencil fa-2x"></i></a><a href="#"><i class="fa fa-trash fa-2x"></i></a>    
+            </div></td></tr>';
+    }
+    echo "</table>";
+}
+
+<?php createReceivedInvoiceTable($_SESSION['username'])?>
+*/
 
 ?>
 

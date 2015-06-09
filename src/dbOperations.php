@@ -122,6 +122,65 @@ function createCompany($companyname, $userid){
 }
 
     //Read
+    
+function getInvoicesByBilltoID($billtoid){
+    //not tested yet
+    global $mysqli;
+    global $db; 
+    
+    if(!($stmt = $mysqli->prepare("SELECT inv.invoiceid, c.name as sendername
+                                    , DATE_FORMAT(duedate, '%M %D, %Y') as duedate
+                                    , DATE_FORMAT(invoicedate, '%M %D, %Y') as invoicedate
+                                    , CASE status
+                                    WHEN 0 THEN 'Draft'
+                                    WHEN 1 THEN 'Paid'
+                                    WHEN 2 THEN 'Pending'
+                                    END as status
+                                    , DATE_FORMAT(lastupdated, '%M %D, %Y') as lastupdated
+                                    , sum(item.amount) as total
+                                    FROM $db.invoice inv
+                                    LEFT JOIN $db.company c on inv.senderid = c.companyid
+                                    LEFT JOIN $db.item on item.invoiceid = inv.invoiceid 
+                                    WHERE billtoid = ?
+                                    GROUP BY inv.invoiceid, c.name, duedate, invoicedate, status, lastupdated
+                                    ORDER BY lastupdated;"))){
+        echo "<div class='error'>Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error. "</div>";
+    }
+    
+    if (!$stmt->bind_param("i", $billtoid)) {
+        echo "<div class='error'>Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error. "</div>";
+    }
+
+    if (!$stmt->execute()) {
+        echo "<div class='error'>Execute failed: (" . $stmt->errno . ") " . $stmt->error. "</div>";
+    }   
+
+    $invoiceid = null;
+    $sendername = null;
+    $duedate = null;
+    $invoicedate = null;
+    $status = null;
+    $lastupdated = null;
+    $total = null;
+    
+    
+    
+    if (!$stmt->bind_result($invoiceid,$sendername,$duedate,$invoicedate,$status,$lastupdated,$total)) {
+        echo "<div class='error'>Binding results failed: (" . $stmt->errno . ") " . $stmt->error. "</div>";
+    }    
+    
+    $invoicearray = array();
+    
+    while($stmt->fetch()){
+        $invoice = array();
+        $invoice = ['lastupdated'=>$lastupdated,'invoiceid'=>$invoiceid,'sendername'=>$sendername,'duedate'=>$duedate, 'invoicedate'=>$invoicedate,'status'=>$status,'total'=>$total];
+        $invoicearray[]=$invoice;
+        }
+
+    unset($stmt);
+    
+    return $invoicearray;  
+}
 
 function getInvoicesBySenderID($senderid){
     global $mysqli;
