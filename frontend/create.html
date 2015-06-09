@@ -1,0 +1,230 @@
+<!doctype html>
+<html class="no-js" lang="">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>FACTURA+ Login</title>
+    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+    
+    <link rel="stylesheet" href="styles/main.css">
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700' rel='stylesheet' type='text/css'>
+</head>
+
+<body class="bg-blue">
+    <div id="wrapper">
+        <nav class="navbar-default navbar-static-side" role="navigation">
+            <div class="sidebar-collapse">
+                <ul class="nav" id="side-menu" style="display: block;">
+                    <li class="nav-header">
+                        <p>
+                            <strong class="font-bold">Andres Antista</strong>
+                        </p>
+                    </li>
+                    <li>
+                        <a href="overview.html"><i class="fa fa-inbox"></i> <span class="nav-label">Overview</span></a>
+                    </li>
+                    <li class="active">
+                        <a href="create.html"><i class="fa fa-pencil"></i> <span class="nav-label">Create</span></a>
+                    </li>
+                    <li>
+                        <a href="received.html"><i class="fa fa-dollar"></i> <span class="nav-label">Received</span></a>
+                    </li>
+                    <li>
+                        <a href="settings.html"><i class="fa fa-cogs"></i> <span class="nav-label">Settings</span></a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <div id="page-wrapper" class="gray-bg">
+            <div class="row border-bottom">
+                <nav class="navbar navbar-static-top" role="navigation">
+                    <ul class="nav navbar-top-links navbar-right">
+                        <li class="">
+                            <span class="m-r-sm text-muted welcome-message">Welcome to FACTURA+</span>
+                        </li>
+                        <li>
+                            <a href="login.html">
+                                <i class="fa fa-sign-out"></i> Log out
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="row wrapper border-bottom white-bg page-heading">
+                <div class="col-lg-8">
+                    <h2>New Invoice</h2>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="wrapper wrapper-content">
+                        <div class="ibox-content p-xl">
+                            <form method="post" class="form-horizontal">
+                                <h2>Recipient information</h2>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">Name or company</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">Street</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">State</label>
+                                    <div class="col-sm-4">
+                                        <select class="form-control m-b" name="account">
+                                            <option value="AL">Alabama</option>
+                                            <option value="AK">Alaska</option>
+                                            <option value="AZ">Arizona</option>
+                                            <option value="AR">Arkansas</option>
+                                            <option value="CA">California</option>
+                                            <option value="CO">Colorado</option>
+                                            <option value="CT">Connecticut</option>
+                                            <option value="DE">Delaware</option>
+                                            <option value="DC">District Of Columbia</option>
+                                            <option value="FL">Florida</option>
+                                            <option value="GA">Georgia</option>
+                                            <option value="HI">Hawaii</option>
+                                            <option value="ID">Idaho</option>
+                                            <option value="IL">Illinois</option>
+                                            <option value="IN">Indiana</option>
+                                            <option value="IA">Iowa</option>
+                                            <option value="KS">Kansas</option>
+                                            <option value="KY">Kentucky</option>
+                                            <option value="LA">Louisiana</option>
+                                            <option value="ME">Maine</option>
+                                            <option value="MD">Maryland</option>
+                                            <option value="MA">Massachusetts</option>
+                                            <option value="MI">Michigan</option>
+                                            <option value="MN">Minnesota</option>
+                                            <option value="MS">Mississippi</option>
+                                            <option value="MO">Missouri</option>
+                                            <option value="MT">Montana</option>
+                                            <option value="NE">Nebraska</option>
+                                            <option value="NV">Nevada</option>
+                                            <option value="NH">New Hampshire</option>
+                                            <option value="NJ">New Jersey</option>
+                                            <option value="NM">New Mexico</option>
+                                            <option value="NY">New York</option>
+                                            <option value="NC">North Carolina</option>
+                                            <option value="ND">North Dakota</option>
+                                            <option value="OH">Ohio</option>
+                                            <option value="OK">Oklahoma</option>
+                                            <option value="OR">Oregon</option>
+                                            <option value="PA">Pennsylvania</option>
+                                            <option value="RI">Rhode Island</option>
+                                            <option value="SC">South Carolina</option>
+                                            <option value="SD">South Dakota</option>
+                                            <option value="TN">Tennessee</option>
+                                            <option value="TX">Texas</option>
+                                            <option value="UT">Utah</option>
+                                            <option value="VT">Vermont</option>
+                                            <option value="VA">Virginia</option>
+                                            <option value="WA">Washington</option>
+                                            <option value="WV">West Virginia</option>
+                                            <option value="WI">Wisconsin</option>
+                                            <option value="WY">Wyoming</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">Zipcode</label>
+                                    <div class="col-sm-2">
+                                        <input type="text" class="form-control" maxlength="5">
+                                    </div>
+                                </div>
+                                <div class="hr-line-dashed"></div>                                
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">Invoce date</label>
+                                    <div class="col-sm-3">
+                                        <div class="input-group date">
+                                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input type="text" class="form-control" id="invoice-date">
+                                        </div>                                        
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">Due date</label>
+                                    <div class="col-sm-3">
+                                        <div class="input-group date">
+                                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input type="text" class="form-control" id="due-date">
+                                        </div>                                        
+                                    </div>
+                                </div>
+                                <div class="hr-line-dashed"></div>
+                                <h2>Invoice lines</h2>
+                                <div id="invoice-lines">
+                                    <div class="form-group">
+                                        <div class="col-sm-push-2 col-sm-10">
+                                            <div class="row">
+                                                <div class="col-md-9">
+                                                    <input type="text" class="form-control" placeholder="Description">
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="input-group m-b">
+                                                    <span class="input-group-addon">$</span>
+                                                        <input type="text" placeholder="Amount" class="form-control">
+                                                    </div>
+                                                </div>
+                                            </div>  
+                                        </div>
+                                    </div>                                    
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-1 col-sm-offset-11 text-right">
+                                        <button class="btn btn-success" id="extra-line">+</button>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-push-2 col-sm-10">
+                                        <div class="row">
+                                            <div class="col-md-push-9 col-md-3">
+                                                <div class="input-group m-b">
+                                                <span class="input-group-addon">$</span>
+                                                    <input type="text" placeholder="Total" class="form-control" disabled>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                    </div>
+                                </div>                                
+                                <div class="hr-line-dashed"></div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">Comment</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="hr-line-dashed"></div>
+                                <div class="form-group">
+                                    <div class="col-sm-4 col-sm-offset-2">
+                                        <button class="btn btn-white" type="submit">Cancel</button>
+                                        <button class="btn btn-default  " type="submit">Save draft</button>
+                                        <button class="btn btn-primary" type="submit">Send</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="footer">
+                <div class="pull-right">
+                    10GB of <strong>250GB</strong> Free.
+                </div>
+                <div>
+                    <strong>Copyright</strong> Example Company © 2014-2015
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="scripts/plugins.js"></script>
+    <script src="scripts/main.js"></script>
+</body>
+
+</html>

@@ -21,26 +21,6 @@ function companyOptions(){
     }
 }
 
-function createInvoiceTable(){
-    $invoicearray = readInvoicesBySenderID(getCompanyIDbyUsername($username)); 
-    echo "<table>";
-    foreach($invoicearray as $index => $invoice){
-        echo "<tr>";
-        echo "<td> $invoice[lastupdated] </td>";
-        echo "<td> $invoice[invoiceid] </td>";
-        echo "<td> $invoice[billtoname] </td>";
-        echo "<td> <span class='label'> $invoice[status] </span> </td>";
-        echo "<td> $invoice[total] </td>";
-        echo '<td>
-            <div class="invoice-actions">
-                <a href="#"><i class="fa fa-pencil fa-2x"></i></a><a href="#"><i class="fa fa-trash fa-2x"></i></a>    
-            </div></td></tr>';
-    }
-    echo "</table>";
-}
-
-createInvoiceTable();
-
 ?>
 
 
@@ -53,7 +33,7 @@ createInvoiceTable();
 
 <body>
     <div id="errortext"></div>
-        <form class="m-t" role="form" id="form" action="invoice.php" method="post" autocomplete="off" onsubmit="ajaxCall(this, 'createinvoice'); return false;">
+        <form class="m-t" role="form" id="form2" action="invoice.php" method="post" autocomplete="off" onsubmit="ajaxCall(this, 'createinvoice'); return false;">
             <div class="form-group">
             <select name="billtoid"  required>
                   <option value="other" selected>select a company</option>
@@ -69,6 +49,20 @@ createInvoiceTable();
             </div>
             <div class="form-group">
                 <textarea class="form-control" name="comment" placeholder="Comment" id="comment"></textarea>
+            </div>
+            <input type="submit" class="btn btn-primary block btn-block m-b" value="Save and Exit">
+        </form>
+        
+        
+        <form class="m-t" role="form" id="form" action="invoice.php" method="post" autocomplete="off" onsubmit="ajaxCall(this, 'createitem'); return false;">
+            <div class="form-group">
+                <input type="number" class="form-control" name="invoiceid" placeholder="Invoice Number" id="invoiceid" required>
+            </div>
+            <div class="form-group">
+                <textarea class="form-control" name="description" placeholder="Description" id="description" required></textarea>
+            </div>
+            <div class="form-group">
+                <input type="number" class="form-control" name="amount" placeholder="amount" id="amount" required>
             </div>
             <input type="submit" class="btn btn-primary block btn-block m-b" value="Save and Exit">
         </form>

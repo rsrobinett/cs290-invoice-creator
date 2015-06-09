@@ -65,17 +65,16 @@ function dropCompanyTable($mysqli, $db){
     }
 }
 
-
 function createInvoiceTable($mysqli, $db){
     $createtablesql = "CREATE TABLE $db.invoice (
     invoiceid INT NOT NULL AUTO_INCREMENT 
     , senderid INT NOT NULL
     , billtoid INT NOT NULL
-    , invoicedate DATETIME NOT NULL
-    , duedate DATETIME NOT NULL
+    , invoicedate DATE NOT NULL
+    , duedate DATE NOT NULL
     , comment VARCHAR( 255 ) 
     , status INT NOT NULL
-    , lastupdated DATETIME NOT NULL
+    , lastupdated DATE NOT NULL
     , PRIMARY KEY (invoiceid)
     , FOREIGN KEY (senderid) REFERENCES company(companyid)
     , FOREIGN KEY (billtoid) REFERENCES company(companyid))";
@@ -91,6 +90,31 @@ function dropInvoiceTable($mysqli, $db){
     $droptablesql = "DROP TABLE $db.invoice";
     if($mysqli->query($droptablesql)){
         echo "Dropped Company Table";
+    } else {
+        echo "Drop Table Query failed: (" . $mysqli->errno . ") " . $mysqli->error;
+    }
+}
+
+function createItemTable($mysqli, $db){
+    $createtablesql = "CREATE TABLE $db.item (
+    itemid INT NOT NULL AUTO_INCREMENT 
+    , invoiceid INT NOT NULL
+    , description VARCHAR( 255 )
+    , amount DOUBLE
+    , PRIMARY KEY (itemid)
+    , FOREIGN KEY (invoiceid) REFERENCES invoice(invoiceid))";
+    if($mysqli->query($createtablesql)){
+        echo "Created Company Table";
+    } else {
+        echo "Create Table Query failed: (" . $mysqli->errno . ") " . $mysqli->error;
+        echo "<div>$createtablesql</div>";
+    }
+}
+
+function dropItemTable($mysqli, $db){
+    $droptablesql = "DROP TABLE $db.item";
+    if($mysqli->query($droptablesql)){
+        echo "Dropped Item Table";
     } else {
         echo "Drop Table Query failed: (" . $mysqli->errno . ") " . $mysqli->error;
     }
@@ -134,6 +158,19 @@ function displayDropInvoiceTableMessage($mysqli, $db){
     if(isset($_POST["dropInvoiceTable"])){
         echo "dropping invoice table";
         dropInvoiceTable($mysqli, $db);
+    }
+}
+
+function displayCreateItemTableMessage($mysqli, $db){
+    if(isset($_POST["createItemTable"])){
+        echo "creating Item table";
+        createItemTable($mysqli, $db);
+    }
+}
+function displayDropItemTableMessage($mysqli, $db){
+    if(isset($_POST["dropItemTable"])){
+        echo "dropping Item table";
+        dropItemTable($mysqli, $db);
     }
 }
 
@@ -184,6 +221,17 @@ function displayDropInvoiceTableMessage($mysqli, $db){
 </form>
 <div><?php displayDropInvoiceTableMessage($mysqli, $db) ?></div>
 </div>
+<form action="createdb.php" method="post">
+    <input type="submit" value="Create Item Table" name="createItemTable">
+</form>
+<div><?php displayCreateItemTableMessage($mysqli, $db) ?></div>
+
+<form action="createdb.php" method="post">
+    <input type="submit" value="Drop Item Table" name="dropItemTable">
+</form>
+<div><?php displayDropItemTableMessage($mysqli, $db) ?></div>
+</div>
+
 
 <form action="createdb.php" method="post">
     <input type="submit" value="Add Test Data" name="inserttestdata">

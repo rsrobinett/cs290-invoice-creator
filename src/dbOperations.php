@@ -67,6 +67,31 @@ function createInvoice($senderid, $billtoid, $invoicedate, $duedate, $comment){
     return $userid;
 }
 
+function createItem($invoiceid, $description, $amount){
+    global $mysqli;
+    global $db;
+    if (!$mysqli || $mysqli->connect_error) {
+            echo "<div class='error'>Connection error " .$mysqli->connect_error. " " .$mysqli->connect_error. "</div>";
+    } 
+    
+    if(!($stmt = $mysqli->prepare("INSERT INTO $db.item (invoiceid, description, amount) VALUES (?, ?, ?)"))){
+        echo "<div class='error'>Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error. "</div>";
+    }
+    
+    if (!$stmt->bind_param("isd", $invoiceid, $description, $amount)) {
+        echo "<div class='error'>Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error. "</div>";
+    }   
+    
+    if (!$stmt->execute()) {
+        echo "<div class='error'>Execute failed: (" . $stmt->errno . ") " . $stmt->error. "</div>";
+    }
+    
+    $userid = $stmt->insert_id;
+    
+    unset($stmt);
+    
+    return $userid;
+}
 
 
 function createCompany($companyname, $userid){
@@ -102,19 +127,21 @@ function getInvoicesBySenderID($senderid){
     global $mysqli;
     global $db; 
     
-    if(!($stmt = $mysqli->prepare("SELECT invoiceid, c.name as billtoname
+    if(!($stmt = $mysqli->prepare("SELECT inv.invoiceid, c.name as billtoname
                                     , DATE_FORMAT(duedate, '%M %D, %Y') as duedate
                                     , DATE_FORMAT(invoicedate, '%M %D, %Y') as invoicedate
                                     , CASE status
                                     WHEN 0 THEN 'Draft'
                                     WHEN 1 THEN 'Paid'
                                     WHEN 2 THEN 'Pending'
-                                    END
+                                    END as status
                                     , DATE_FORMAT(lastupdated, '%M %D, %Y') as lastupdated
-                                    , 1000 as total 
+                                    , sum(item.amount) as total
                                     FROM $db.invoice inv
                                     LEFT JOIN $db.company c on inv.billtoid = c.companyid
+                                    LEFT JOIN $db.item on item.invoiceid = inv.invoiceid 
                                     WHERE senderid = ?
+                                    GROUP BY inv.invoiceid, c.name, duedate, invoicedate, status, lastupdated
                                     ORDER BY lastupdated;"))){
         echo "<div class='error'>Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error. "</div>";
     }

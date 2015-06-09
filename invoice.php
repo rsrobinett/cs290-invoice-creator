@@ -59,7 +59,34 @@ if($_POST['action'] === "createinvoice"){
 
 if($_POST['action'] === "createitem"){
 
-    exit("success");    
+    $errormsg = "";
+    $invoiceid=null;
+    $description = null;
+    $amount = null;
+
+if(isset($_POST['invoiceid'])){
+        $invoiceid = $_POST['invoiceid'];
+    } else {
+        $errormsg = $errormsg."you must associate an invoice number to create an item. ";
+    }
+    if(isset($_POST['description'])){
+        $description = $_POST['description'];
+    }else {
+        $errormsg = $errormsg."An item must have a description.  ";
+    }
+    if(isset($_POST['amount'])){
+        $amount = $_POST['amount'];
+    } else {
+        $errormsg = $errormsg."An item requires an amount.  ";
+    }
+
+
+    if(empty($errormsg)){
+    createItem($invoiceid, $description, $amount);
+    exit("success"); 
+    }
+    
+    exit($errormsg);    
 }
 
 exit("Invalid request to the server");    
