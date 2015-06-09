@@ -3,16 +3,15 @@ error_reporting(E_ALL);
 ini_set("display_errors", 1);
 
 require_once 'functions.php';
-require_once 'src/dbCredentials.php';
-require_once 'src/dbConnection.php';
+require_once 'src/dbOperations.php';
 
 session_start();
 
-//prevent navigation to main page if not logged in
-if(($_SERVER['REQUEST_METHOD'] != 'POST') && !isset($_SESSION['username'])){
+if(!isset($_SESSION['username'])){
     echo "you aren't logged in";
-    redirect('auth.html?action=logout');
+    redirect('index.php');
 }
+
 ?>
 
 <!doctype html>
@@ -37,20 +36,16 @@ if(($_SERVER['REQUEST_METHOD'] != 'POST') && !isset($_SESSION['username'])){
                 <ul class="nav" id="side-menu" style="display: block;">
                     <li class="nav-header">
                         <p>
-                            <?php
-    echo $_SESSION['username'];
-    // echo "userID:".getUserIDFromUserName($mysqli, $db);
-//   printCompanyInfo($mysqli, $db);
-?>
+                            <?php echo $_SESSION['username'];?>
 
-                            <strong class="font-bold">Andres Antista</strong>
+                            <strong class="font-bold"><?php echo getCompanyNamebyUsername($_SESSION['username']);?></strong>
                         </p>
                     </li>
                     <li class="active">
                         <a href="overview.html"><i class="fa fa-inbox"></i> <span class="nav-label">Overview</span></a>
                     </li>
                     <li>
-                        <a href="create.html"><i class="fa fa-pencil"></i> <span class="nav-label">Create</span></a>
+                        <a href="create.php"><i class="fa fa-pencil"></i> <span class="nav-label">Create</span></a>
                     </li>
                     <li>
                         <a href="received.html"><i class="fa fa-dollar"></i> <span class="nav-label">Received</span></a>

@@ -1,4 +1,8 @@
 <?php 
+//redirect user if already logged in
+if(isset($_SESSION['username']) && (!isset($_GET['action']))){
+  header("Location: ".getPath()."/main.php", true);
+}
 ?>
 
 <!doctype html>
@@ -9,7 +13,6 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>FACTURA+ Register</title>
-    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
     
     <link rel="stylesheet" href="styles/main.css">
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700' rel='stylesheet' type='text/css'>
@@ -24,20 +27,20 @@
             <h3>Register to FACTURA+</h3>
             <p>Create account to see it in action.</p>
             <div id="errortext"></div>
-            <form class="m-t" role="form" id="form" action="" method="post" autocomplete="off">
-                <!--<div class="form-group">-->
-                <!--    <input type="text" class="form-control" placeholder="Company" id="companyname" name="companyname" required="">-->
-                <!--</div>-->
+            <form class="m-t" role="form" id="form" action="auth.php" method="post" autocomplete="off" onsubmit="ajaxCall(this, 'register'); return false;">
                 <div class="form-group">
-                    <input type="text" class="form-control" placeholder="Username" id="username" name="username" required>
+                    <input type="text" class="form-control" placeholder="Company" id="companyname" name="companyname" required="">
                 </div>
                 <div class="form-group">
-                    <input type="password" class="form-control" placeholder="Password" id="password" name="password" required>
+                    <input type="text" class="form-control" placeholder="Username" id="username" name="username" required="">
                 </div>
                 <div class="form-group">
-                    <input type="password" class="form-control" placeholder="Retype Password" id="passwordConfirm" name="passwordConfirm" required>
+                    <input type="password" class="form-control" placeholder="Password" id="password" name="password" required="">
                 </div>
-                <input type="submit" class="btn btn-primary block full-width m-b" value="Register" name="register">
+                <div class="form-group">
+                    <input type="password" class="form-control" placeholder="Retype Password" id="repassword" name="repassword" required="">
+                </div>
+                <input type="submit" class="btn btn-primary block full-width m-b" value="Register">
 
                 <p class="text-muted text-center"><small>Already have an account?</small></p>
                 <a class="btn btn-sm btn-white btn-block" href="/">Login</a>

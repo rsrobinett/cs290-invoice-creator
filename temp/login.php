@@ -1,9 +1,13 @@
 <?php
 //include config
-require_once('includes/db.php');
-//check if already logged in move to home page
-if( $user->is_logged_in() ){ header('Location: index.php'); } 
+//require_once('includes/db.php');
+
+//check if already logged in move to home page--this happens in loginpage
+//if( $user->is_logged_in() ){ header('Location: index.php'); } 
+
+
 //process login form if submitted
+/*
 if(isset($_POST['submit'])){
 	$username = $_POST['username'];
 	$password = $_POST['password'];
@@ -19,7 +23,8 @@ if(isset($_POST['submit'])){
 }//end if submit
 ?>
 
-<!doctype html>
+
+<!--doctype html>
 <html class="no-js" lang="">
 
 <head>
@@ -27,7 +32,7 @@ if(isset($_POST['submit'])){
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>FACTURA+ Login</title>
-    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+  
     
     <link rel="stylesheet" href="styles/main.css">
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700' rel='stylesheet' type='text/css'>
@@ -58,10 +63,10 @@ if(isset($_POST['submit'])){
             <p class="m-t"> <small>OSU CS290 - Rachelle Robinett &copy;2015</small> </p>
         </div>
     </div>
-    <script src="app.js"></script> <!-- this one -->
     <script src="scripts/vendor.js"></script>
     <script src="scripts/plugins.js"></script>
     <script src="scripts/main.js"></script>
 </body>
 
-</html>
+</html-->
+*/

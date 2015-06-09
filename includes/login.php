@@ -1,5 +1,5 @@
 
-<!doctype html>
+<!--doctype html>
 <html class="no-js" lang="">
 
 <head>
@@ -7,7 +7,7 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>FACTURA+ Login</title>
-    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+    
     
     <link rel="stylesheet" href="styles/main.css">
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700' rel='stylesheet' type='text/css'>
@@ -38,10 +38,10 @@
             <p class="m-t"> <small>OSU CS290 - Rachelle Robinett &copy;2015</small> </p>
         </div>
     </div>
-    <script src="app.js"></script> <!-- this one -->
+    
     <script src="scripts/vendor.js"></script>
     <script src="scripts/plugins.js"></script>
     <script src="scripts/main.js"></script>
 </body>
 
-</html>
+</html-->

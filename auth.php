@@ -1,114 +1,71 @@
 <?php
-// require('db.php');
 error_reporting(E_ALL);
 ini_set("display_errors", 1);
 
-require_once 'functions.php';
-require_once 'src/dbCredentials.php';
-require_once 'src/dbConnection.php';
+session_start();
 
-$username = $_POST['username'];
-$password = $_POST['password'];
-$action = $_POST['action'];
+require_once 'src/dbOperations.php';
 
-//validate login
-function validateLogin($username, $password, $mysqli) {
-    $user = getUserName($username, $mysqli);
-    return $password == $user['password'];
-}
-
-// include_once "$_SERVER[DOCUMENT_ROOT]/src/dbCredentials.php";
-
-// include_once "$_SERVER[DOCUMENT_ROOT]/src/dbConnection.php";
-
-// include_once "$_SERVER[DOCUMENT_ROOT]/src/validation.php";
-
-global $mysqli;
-
-if (!$mysqli) {
-    $mysqli = createDBConnection($dbhost, $dbuser, $dbpass, $dbname);
-}
-
-    
-function setSessionUsername() {
-    if(isset($_POST['username']) || ($_POST['username'] !== $_SESSION['username'])){
-       $_SESSION['username'] = $_POST['username'];
-    }       
-}
-
-function login($mysqli, $db) {
-    setSessionUsername();
-}
-
-function usernameAndPasswordInDB($username, $password, $mysqli, $db) {
-    if (!$mysqli || $mysqli->connect_error) {
-        echo "<div class='error'>Connection error " .$mysqli->connect_error. " " .$mysqli->connect_error. "</div>";
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if(isset($_POST['action'])){
+        $action = $_POST['action'];
+    } 
+    if(isset($_POST['username'])){
+        $username = $_POST['username'];
     }
-    
-    $username = trim($_POST['username']);
-    $hashpass = trim(base64_encode(hash('sha256',$_POST['password'])));
-
-    if(!($stmt = $mysqli->prepare("SELECT username FROM $db.user WHERE username = ? AND hashpass = ?"))){
-        echo "<div class='error'>Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error. "</div>";
+    if(isset($_POST['password']))
+    {
+        $password = $_POST['password'];
     }
-
-    if (!$stmt->bind_param("ss", $username, $hashpass )) {
-        echo "<div class='error'>Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error. "</div>";
+    if(isset($_POST['companyname'])){
+        $companyname = $_POST['companyname'];
     }
-
-    if (!$stmt->execute()) {
-        echo "<div class='error'>Execute failed: (" . $stmt->errno . ") " . $stmt->error. "</div>";
-    }   
-    
-    $stmt->store_result();
-    
-    if($stmt->num_rows === 1){
-        unset($stmt);
-        return true;
-    }
-
-    unset($stmt);
-    return false;
 }
-
-//return codes:
-// 0 = fail
-// 1 = valid
-// 2 = username exists
-// 3 = blank username
-// 4 = blank password
-if (empty($username)) exit('3');
-if (empty($password)) exit('4');
 
 if ($action === 'register') {
-    // $user = getUserName($username, $mysqli);
+    $errormsg="";
+    //check if username exists
+    if(usernameExists($username, $password)){
+        $errormsg = $errormsg."The username ($username) is already taken please choose another username.  ";
+    }
     
-    // //see if userid exists
-    // if ($user['name']) exit('2');
-    // addUser($username, $password, $mysqli);
+    //check if companyname exits
+    if(companyExists($companyname)){
+        $errormsg = $errormsg."This company name ($companyname) is already taken please choose another company name.  ";
+    }
     
-    // $user = getUserName($username, $mysqli);
-    // session_start();
-    // $_SESSION['username'] = $username;
-    // $_SESSION['userid'] = $user['userid'];
-    // print '1';
-    // exit();
-} else if ($action === 'logout') {
-    session_start();
-    $_SESSION = array();
-    session_destroy();
-    redirect('index.php');
+    if(empty($errormsg))
+    {
+        //write data to database
+        $_SESSION['username'] = $username;
+        $userid = createUser($username, $password);
+        $companyid = createCompany($companyname, $userid);
+        exit("success");
+    }
+    
+    exit($errormsg);
 }
 
-if (usernameAndPasswordInDB($username, $password, $mysqli, $db))
-{
-    // $user = getUserName($username, $mysqli);
-    session_start();
-    $_SESSION['username'] = $username;
-    // $_SESSION['userid'] = $user['userid'];
-    exit('1');
+if($action === 'login'){
+    if (empty($username))
+    {
+        exit('Username cannot be empty');
+    }
+    if (empty($password)) 
+    {
+        exit('Password cannot be empty');
+    }
+    
+    if (usernameAndPasswordInDB($username, $password, $mysqli, $db))
+    {
+        $_SESSION['username'] = $username;
+        exit('success');
+    } else {
+        exit('The username and password that you entered are not correct or you are not registerd');
+    } 
 }
 
-exit('0');
+exit('You have made an invalid request to the Server');
 
 ?>
+
