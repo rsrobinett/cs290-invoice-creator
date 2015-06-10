@@ -1,4 +1,5 @@
 <?php
+/*
 ob_start();
 session_start();
 
@@ -23,4 +24,5 @@ try {
 //include the user class, pass in the database connection
 include('authentication.php');
 $user = new User($db); 
+*/
 ?>

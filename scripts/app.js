@@ -15,6 +15,9 @@ var ajaxCall = function (form, action) {
                 if(data === "success"){
                     //redirect to main page here
                     document.location.href = "main.php";
+                }  if(data === "saved"){
+                    //stay on page
+                    //document.location.href = "main.php";
                 } else {
                   errortxt += data;
                 }

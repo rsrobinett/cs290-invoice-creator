@@ -122,6 +122,105 @@ function createCompany($companyname, $userid){
 }
 
     //Read
+
+function getItemsByInvoiceIDandBillToUsername(){
+    //not yet implemented
+}
+    
+function getInvoicesByIDandBillToUsername($id, $username){
+    //not tested yet
+    global $mysqli;
+    global $db; 
+    
+    $userid = getUserIDbyUsername($username);
+    
+    if(!($stmt = $mysqli->prepare("SELECT inv.invoiceid
+                                    , c.name as billtoname
+                                    , c.streetaddress as billingaddress
+                                    , '' as billingcity
+                                    , c.state as billingstate
+                                    , c.zip as billingzip
+                                    , s.name as sendername
+                                    , s.streetaddress as senderaddress
+                                    , '' as sendercity
+                                    , s.state as senderstate
+                                    , s.zip as senderzip
+                                    , DATE_FORMAT(duedate, '%M %D, %Y') as duedate
+                                    , DATE_FORMAT(invoicedate, '%M %D, %Y') as invoicedate
+                                    , CASE status
+                                    WHEN 0 THEN 'Draft'
+                                    WHEN 1 THEN 'Paid'
+                                    WHEN 2 THEN 'Pending'
+                                    END as status
+                                    , DATE_FORMAT(lastupdated, '%M %D, %Y') as lastupdated
+                                    FROM $db.invoice inv
+                                    LEFT JOIN $db.company c on inv.billtoid = c.companyid
+                                    LEFT JOIN $db.company s on inv.senderid = s.companyid
+                                    WHERE inv.invoiceid = ? and c.userid = ?;
+                                   "))){
+                                        
+        echo "<div class='error'>Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error. "</div>";
+    }
+    
+    if (!$stmt->bind_param("ii", $id, $userid)) {
+        echo "<div class='error'>Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error. "</div>";
+    }
+
+    if (!$stmt->execute()) {
+        echo "<div class='error'>Execute failed: (" . $stmt->errno . ") " . $stmt->error. "</div>";
+    }   
+
+    $invoiceid = null;
+    $billtoname = null;
+    
+    $billingaddress=null;
+    $billingcity=null;
+    $billingstate=null;
+    $billingzip=null;
+    $sendername=null;
+    $senderaddress=null;
+    $sendercity=null;
+    $senderstate=null;
+    $ssenderzip=null;
+    
+    
+    $duedate = null;
+    $invoicedate = null;
+    $status = null;
+    $lastupdated = null;
+    $total = null;
+    
+    
+    if (!$stmt->bind_result($invoiceid,$billtoname,$billingaddress,$billingcity,$billingstate,$billingzip,$sendername,$senderaddress,$sendercity,$senderstate,$ssenderzip,$duedate,$invoicedate,$status,$lastupdated)) {
+        echo "<div class='error'>Binding results failed: (" . $stmt->errno . ") " . $stmt->error. "</div>";
+    }    
+    
+    $invoicearray = array();
+    
+    while($stmt->fetch()){
+        $invoice = array();
+        $invoice = ['lastupdated'=>$lastupdated
+                    ,'invoiceid'=>$invoiceid
+                    ,'billtoname'=>$billtoname
+                    ,'billingaddress'=>$billingaddress
+                    ,'billingcity'=>$billingcity
+                    ,'billingstate'=>$billingstate
+                    ,'billingzip'=>$billingzip
+                    ,'sendername'=>$sendername
+                    ,'senderaddress'=>$senderaddress
+                    ,'sendercity'=>$sendercity
+                    ,'senderstate'=>$senderstate
+                    ,'ssenderzip'=>$ssenderzip
+                    ,'duedate'=>$duedate, 
+                    'invoicedate'=>$invoicedate
+                    ,'status'=>$status];
+        $invoicearray[]=$invoice;
+        }
+
+    unset($stmt);
+    
+    return $invoicearray;  
+}
     
 function getInvoicesByBilltoID($billtoid){
     //not tested yet
