@@ -1,5 +1,5 @@
 <div id="page-wrapper" class="gray-bg">
-    <div class="row border-bottom">
+    <div class="row border-bottom no-print">
         <nav class="navbar navbar-static-top" role="navigation">
             <ul class="nav navbar-top-links navbar-right">
                 <li class="">
@@ -13,7 +13,7 @@
             </ul>
         </nav>
     </div>
-    <div class="row wrapper border-bottom white-bg page-heading">
+    <div class="row wrapper border-bottom white-bg page-heading no-print">
         <div class="col-lg-12">
             <h2><?php echo $pagetitle;?></h2>
         </div>

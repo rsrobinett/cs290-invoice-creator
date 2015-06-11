@@ -5,14 +5,65 @@
 <?php include 'shared/header.php';?>
 
 <?php
-function companyOptions(){
-    
+$invoice = null;
+if(isset($_GET['invoiceid'])){
+    $invoice = getInvoicesByIDandSenderUsername($_GET['invoiceid'],$_SESSION['username']);
+};
+
+function companyOptions($invoice){
     $companyArray = getCompanyNames();
     
     foreach($companyArray as $id=>$name){
-        echo "<option value='$id'>'$name'</option>";
+        if($id === prefilledInvoiceCompany($invoice)){
+            echo "<option value='$id' selected>'$name'</option>";
+        } else {
+            echo "<option value='$id'>'$name'</option>";
+        }
     }
 }
+
+
+var_dump($invoice); 
+
+function prefilledInvoiceCompany($invoice){
+   if(isset($invoice)){
+      return $invoice['billto']['id'];
+   } 
+}
+
+function prefilledInvoiceValue($invoice, $field){
+    if(isset($invoice)){
+      return $invoice[$field];
+   }   
+}
+
+
+
+
+
+function createItemTable($id, $username){
+    $items = getItemsByInvoiceIDandBillToUsername($id, $username); 
+    foreach($items as $index => $item){
+        echo "<tr>";
+        echo "<td>";
+        //echo "<div><strong></strong></div>";
+        //echo "<small> $item[description] </small>";
+        echo "$item[description]";
+        echo "</td>";
+        echo "<td>\$$item[amount] </td>";
+        echo '</tr>';
+    }
+}
+
+
+$total = null;
+if(isset($_GET['invoiceid'])){
+    $total = getInvoiceTotalByInvoiceIDandSenderUsername($_GET['invoiceid'],$_SESSION['username']);
+}
+//var_dump($total);
+
+
+
 
 /*
 function invoiceidparameter(){
@@ -31,8 +82,8 @@ function invoiceidparameter(){
         <label class="col-sm-2 control-label">Name or Company</label>
         <div class="col-sm-4">
             <select class="form-control m-b" name="billtoid">
-                <option value="" selected>Select a Name or Company</option>
-                <?php companyOptions(); ?>
+                <option value="">Select a Name or Company</option>
+                <?php companyOptions($invoice); ?>
             </select>
         </div>
     </div>
@@ -41,8 +92,8 @@ function invoiceidparameter(){
         <label class="col-sm-2 control-label">Invoice date</label>
         <div class="col-sm-3">
             <div class="input-group date">
-                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                <input type="text" class="form-control" id="invoice-date" name="invoicedate">
+                <span class="input-group-addon" ><i class="fa fa-calendar"></i></span>
+                <input type="text" class="form-control" id="invoice-date" name="invoicedate" value="<?php echo prefilledInvoiceValue($invoice,'invoicedate') ?>">
             </div>                                        
         </div>
     </div>
@@ -51,7 +102,7 @@ function invoiceidparameter(){
         <div class="col-sm-3">
             <div class="input-group date">
                 <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                <input type="text" class="form-control" id="due-date" name="duedate">
+                <input type="text" class="form-control" id="due-date" name="duedate" value="<?php echo prefilledInvoiceValue($invoice,'duedate') ?>">
             </div>                                        
         </div>
     </div>
@@ -63,12 +114,12 @@ function invoiceidparameter(){
             <div class="col-sm-push-2 col-sm-10">
                 <div class="row">
                     <div class="col-md-8">
-                        <input type="text" class="form-control" placeholder="Description">
+                        <input type="text" class="form-control" placeholder="Description" name="description">
                     </div>
                     <div class="col-md-3">
                         <div class="input-group m-b">
                         <span class="input-group-addon">$</span>
-                            <input type="text" placeholder="Amount" class="form-control js-amount">
+                            <input type="text" placeholder="Amount" class="form-control js-amount" name="amount">
                         </div>
                     </div>
                     <div class="col-md-1 text-right">
@@ -89,7 +140,7 @@ function invoiceidparameter(){
                 <div class="col-md-push-8 col-md-3">
                     <div class="input-group m-b">
                     <span class="input-group-addon">$</span>
-                        <input type="text" placeholder="Total" id="total-amount" class="form-control" disabled>
+                        <input type="text" placeholder="Total" id="total-amount" class="form-control" value="<?php echo $total?>" disabled>
                     </div>
                 </div>
             </div>
@@ -99,7 +150,7 @@ function invoiceidparameter(){
     <div class="form-group">
         <label class="col-sm-2 control-label" name="comment">Comment</label>
         <div class="col-sm-10">
-            <input type="text" class="form-control">
+            <input type="text" class="form-control" value="<?php echo prefilledInvoiceValue($invoice,'comment') ?>">
         </div>
     </div>
     <div class="hr-line-dashed"></div>

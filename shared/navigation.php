@@ -1,4 +1,4 @@
-<nav class="navbar-default navbar-static-side" role="navigation">
+<nav class="navbar-default navbar-static-side no-print" role="navigation">
     <div class="sidebar-collapse">
         <ul class="nav" id="side-menu" style="display: block;">
             <li class="nav-header">

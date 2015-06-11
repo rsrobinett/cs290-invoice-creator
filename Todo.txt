@@ -1,0 +1,3 @@
+
+On viewinvoice.php?invoiceid=
+if an invoiceid is passed in get that is not associated with the user an unhandles error occurs.  At least it's better than seeing the wrong clients invoice. 

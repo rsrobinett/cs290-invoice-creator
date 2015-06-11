@@ -23,7 +23,7 @@ var refreshRemoveInvoiceLineHandlerListener = function () {
     var removeLine = document.getElementsByClassName('js-remove-line');
     for (var i = 0; i < removeLine.length; i++) {
         removeLine[i].addEventListener('click', removeInvoceLineHandler);
-    };    
+    };            
 }
 
 var refreshAmountHandlerListener = function () {
@@ -40,16 +40,61 @@ var updateTotal = function () {
     for (var i = 0; i < amounts.length; i++) {
         subtotal += parseFloat(amounts[i].value) || 0;
     };
-    total.value = subtotal;
+    total.value = subtotal;        
 }
 
+
+// var validator = function() {
+//     var regexCurrency  = /^[1-9]\d*(((,\d{3}){1})?(\.\d{0,2})?)$/;
+//     var numStr = "123.20";
+//     if (regexCurrency.test(numStr))
+//         alert("Number is valid");
+// }
+
+
+// var createJson = function(e) {
+//     e.preventDefault();
+//     var form = document.getElementById('invoice');
+//     var json = {lines:[]};
+
+//     for (var i = 0; i < form.length; i++){
+//         if (!!form[i].name) {
+
+//             if(form[i].name === 'description') {
+//                 var line = {};
+
+//                 line[encodeURIComponent(form[i].name)] = encodeURIComponent(form[i].value);
+//                 line[encodeURIComponent(form[i+1].name)] = encodeURIComponent(form[i+1].value);
+//                 line['line'] = i;
+//                 json.lines.push(line);
+//             } else {
+//                 json[encodeURIComponent(form[i].name)] = encodeURIComponent(form[i].value);
+//             }
+//         }
+//     }
+
+//     console.log(JSON.stringify(json));
+// }
+
 document.addEventListener('DOMContentLoaded', function (event) {
-    var extraLine = document.getElementById('extra-line');
-    extraLine.addEventListener('click', addInvoiceLineHandler);
+    
+        var pickerInvoiceDate = new Pikaday({ field: document.getElementById('invoice-date') });
+        var pickerDueDate = new Pikaday({ field: document.getElementById('due-date') });
 
-    refreshRemoveInvoiceLineHandlerListener();
-    refreshAmountHandlerListener();
+    var invoice = document.getElementById('invoice');
+    if (invoice) {
+        var extraLine = document.getElementById('extra-line');
+        extraLine.addEventListener('click', addInvoiceLineHandler);    
+        refreshRemoveInvoiceLineHandlerListener();
+        refreshAmountHandlerListener();
 
-    var pickerInvoiceDate = new Pikaday({ field: document.getElementById('invoice-date') });
-    var pickerDueDate = new Pikaday({ field: document.getElementById('due-date') });
+
+        // var sendButton = document.getElementById('send');
+        // sendButton.addEventListener('click', createJson);
+    }
+    
+    var print = document.getElementById('print');
+    if (print) {
+        print.addEventListener('click', function() { window.print(); });    
+    }
 });
