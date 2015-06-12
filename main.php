@@ -8,7 +8,7 @@
 function createInvoiceTable($username){
     $invoicearray = getInvoicesBySenderID(getCompanyIDbyUsername($username)); 
     foreach($invoicearray as $index => $invoice){
-        echo "<tr id=\"$invoice[invoiceid]\">";
+        echo "<tr>";
         echo "<td> $invoice[lastupdated] </td>";
         echo "<td> #$invoice[invoiceid] </td>";
         echo "<td> $$invoice[billtoname] </td>";
@@ -17,13 +17,14 @@ function createInvoiceTable($username){
         echo '<td>
             <div class="invoice-actions">
                 <a href="'.getPath().'/create.php?invoiceid='.$invoice['invoiceid'].'"><i class="fa fa-pencil fa-2x"></i></a>
-                <a href="#" class="sendinvoice" ><i class="sendinvoice fa fa-paper-plane fa-2x"></i></a>
+                <a href="#"><i  id="'.$invoice['invoiceid'].'" class="sendinvoice fa fa-paper-plane fa-2x"></i></a>
             </div></td></tr>';
     }
 }
 ?>
 
 <div class="table-responsive">
+    <div id="errortext"></div>
     <table id="overview" class="table table-striped">
         <thead>
             <tr>

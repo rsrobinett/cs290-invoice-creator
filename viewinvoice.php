@@ -26,7 +26,7 @@ function createItemTable($id, $username){
 $total = getInvoiceTotalByInvoiceIDandBilltoUsername($_GET['invoiceid'],$_SESSION['username']);
 
 ?>
-
+<div id="errortext"></div>
 <div class="row">
     <div class="col-xs-6">
         <h5>From:</h5>
@@ -76,8 +76,9 @@ $total = getInvoiceTotalByInvoiceIDandBilltoUsername($_GET['invoiceid'],$_SESSIO
     </tbody>
 </table>
 <div class="text-right no-print">
+    <span id="paymentstatus" class='label'><?php echo $invoice[0]['status']; ?> </span>
     <button class="btn btn-info" id="print"><i class="fa fa-print"></i> Print</button>
-    <button class="btn btn-primary"><i class="fa fa-dollar"></i> Send Payment</button>
+    <button class="btn btn-primary" onclick="changeStatusToPaid(<?php echo $invoice[0]['invoiceid']; ?>)"><i class="fa fa-dollar"></i> Send Payment</button>
 </div>
 <div class="well m-t"><strong>Comments </strong><?php echo $invoice[0]['comment']; ?>
 </div>

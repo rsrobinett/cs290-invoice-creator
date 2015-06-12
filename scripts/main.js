@@ -1,27 +1,25 @@
 /* jshint devel:true */
 'use strict';
 
-// var addInvoiceLineHandler = function (e) {
-//     var invoiceLines = document.getElementById('invoice-lines');
-//     var extraLine = '<div class="col-sm-push-2 col-sm-10"><div class="row"><div class="col-sm-3 col-md-3 col-lg-2"><input type="text" class="form-control" placeholder="Description"></div><div class="col-sm-3 col-md-3 col-lg-2"><div class="input-group m-b"><span class="input-group-addon">$</span><input type="text" placeholder="Amount" class="form-control js-amount"></div></div><div class="col-sm-3 col-md-3 col-lg-2 text-right"><button class="btn btn-danger js-remove-line" type="button"><i class="fa fa-trash"></i></button><button class="btn btn-success" type="button"><i class="fa fa-floppy-o"></i></button></div></div></div>';
-
-//     var invoice = document.createElement('div');
-//     invoice.classList.add('form-group');
-//     invoice.innerHTML = extraLine;
-//     invoiceLines.appendChild(invoice);
-//     refreshRemoveInvoiceLineHandlerListener();
-//     refreshAmountHandlerListener();
-//     e.preventDefault();
-// };
-
-var changeStatusHandler = function (e){
-    var invoiceid = e.target.id;
-    currentRow.id;
+var changeStatusToSentHandler = function (e){
+    var currentElement = e.currentTarget;
     var form = document.createElement("form");
     form.action='invoice.php';
-    form.invoiceid=invoiceid;
-    
+    var input = document.createElement('input');
+    input.name = 'invoiceid';
+    input.value = currentElement.id;
+    form.appendChild(input);
     ajaxCall(form, 'senditem');
+}
+
+var changeStatusToPaid = function(invoiceid){
+    var form = document.createElement("form");
+    form.action='invoice.php';
+    var input = document.createElement('input');
+    input.name = 'invoiceid';
+    input.value = invoiceid;
+    form.appendChild(input);
+    ajaxCall(form, 'payitem');
 }
 
 var removeInvoceLineHandler = function (e) {
@@ -83,6 +81,7 @@ var updateTotal = function () {
 }
 
 
+
 document.addEventListener('DOMContentLoaded', function (event) {
     
     var invoice = document.getElementById('invoice');
@@ -108,11 +107,15 @@ document.addEventListener('DOMContentLoaded', function (event) {
         refreshAmountHandlerListener();
     }
     
-    var overview = document.getElementsByTagName("a").elements.getElementByClass('sendinvoice');
-    if(overview){
-        changeStatusHandler();
-    }
+    var overview = document.getElementsByClassName('sendinvoice');
     
+       for (var i = 0; i < overview.length; i++) {
+        overview[i].addEventListener('click', changeStatusToSentHandler);
+    };
+ /*   
+    var sendpayment = document.getElementById('sendpayment');
+    sendpayment.addEventListener('click',changeStatusToPaidHandler);
+*/
     var print = document.getElementById('print');
     if (print) {
         print.addEventListener('click', function() { window.print(); });    

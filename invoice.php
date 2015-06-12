@@ -160,5 +160,43 @@ if($_POST['action'] === "deleteitem"){
     exit($errormsg);  
 }
 
+if($_POST['action'] === 'senditem'){
+    $errormsg = null;
+    if(isset($_POST['invoiceid'])){
+        $invoiceid = $_POST['invoiceid'];
+    } else {
+        $errormsg = $errormsg."You must send invoiceid to change the status of an item.  ";
+    }
+    
+    if(empty($errormsg)){
+        setInvoiceStatus($invoiceid, 1);   
+        $returnvalue = ['status'=>'statussaved', 'id'=>$invoiceid ,'newstatus'=>"Pending"];
+        exit(json_encode($returnvalue)); 
+        
+    }
+    
+    exit($errormsg); 
+}
+
+if($_POST['action'] === 'payitem'){
+    $errormsg = null;
+    if(isset($_POST['invoiceid'])){
+        $invoiceid = $_POST['invoiceid'];
+    } else {
+        $errormsg = $errormsg."You must send invoiceid to change the status of an item.  ";
+    }
+    
+    if(empty($errormsg)){
+        setInvoiceStatus($invoiceid, 2);   
+        $returnvalue = ['status'=>'statussaved', 'id'=>$invoiceid ,'newstatus'=>"Paid"];
+        exit(json_encode($returnvalue)); 
+        
+    }
+    
+    exit($errormsg); 
+}
+
+
+
 exit("Invalid request to the server");    
 ?>

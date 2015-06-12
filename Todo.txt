@@ -2,10 +2,11 @@
 
 ***Need to fix
 -date picker not picking date
--date is not in a format the SQL can user
--change overview to accounts receivable
--change Received to accounts payable
+-date is not in a format the SQL can user(done)
+-change overview to accounts receivable(done)
+-change Received to accounts payable(done)
 -click save and there is no indication that it saved
+-make so that sending an already paid invoice doesn't resend.   
 
 ***Libraries
 Using date picker library https://github.com/dbushell/Pikaday

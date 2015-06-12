@@ -146,8 +146,8 @@ function getInvoicesByIDandSenderUsername($id, $username){
                                     , DATE_FORMAT(invoicedate, '%M %D, %Y') as invoicedate
                                     , CASE status
                                     WHEN 0 THEN 'Draft'
-                                    WHEN 1 THEN 'Paid'
-                                    WHEN 2 THEN 'Pending'
+                                    WHEN 1 THEN 'Pending'
+                                    WHEN 2 THEN 'Paid'
                                     END as status
                                     , DATE_FORMAT(lastupdated, '%M %D, %Y') as lastupdated
                                     , comment
@@ -435,15 +435,15 @@ function getInvoicesByIDandBillToUsername($id, $username){
                                     , DATE_FORMAT(invoicedate, '%M %D, %Y') as invoicedate
                                     , CASE status
                                     WHEN 0 THEN 'Draft'
-                                    WHEN 1 THEN 'Paid'
-                                    WHEN 2 THEN 'Pending'
+                                    WHEN 1 THEN 'Pending'
+                                    WHEN 2 THEN 'Paid'
                                     END as status
                                     , DATE_FORMAT(lastupdated, '%M %D, %Y') as lastupdated
                                     , comment
                                     FROM $db.invoice inv
                                     LEFT JOIN $db.company c on inv.billtoid = c.companyid
                                     LEFT JOIN $db.company s on inv.senderid = s.companyid
-                                    WHERE inv.invoiceid = ? and c.userid = ?;
+                                    WHERE status > 0 AND inv.invoiceid = ? AND c.userid = ?;
                                    "))){
                                         
         echo "<div class='error'>Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error. "</div>";
@@ -530,15 +530,15 @@ function getInvoicesByBilltoID($billtoid){
                                     , DATE_FORMAT(invoicedate, '%M %D, %Y') as invoicedate
                                     , CASE status
                                     WHEN 0 THEN 'Draft'
-                                    WHEN 1 THEN 'Paid'
-                                    WHEN 2 THEN 'Pending'
+                                    WHEN 1 THEN 'Pending'
+                                    WHEN 2 THEN 'Paid'
                                     END as status
                                     , DATE_FORMAT(lastupdated, '%M %D, %Y') as lastupdated
                                     , sum(item.amount) as total
                                     FROM $db.invoice inv
                                     LEFT JOIN $db.company c on inv.senderid = c.companyid
                                     LEFT JOIN $db.item on item.invoiceid = inv.invoiceid 
-                                    WHERE billtoid = ?
+                                    WHERE status > 0 AND billtoid = ?
                                     GROUP BY inv.invoiceid, c.name, duedate, invoicedate, status, lastupdated
                                     ORDER BY lastupdated;"))){
         echo "<div class='error'>Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error. "</div>";
@@ -588,8 +588,8 @@ function getInvoicesBySenderID($senderid){
                                     , DATE_FORMAT(invoicedate, '%M %D, %Y') as invoicedate
                                     , CASE status
                                     WHEN 0 THEN 'Draft'
-                                    WHEN 1 THEN 'Paid'
-                                    WHEN 2 THEN 'Pending'
+                                    WHEN 1 THEN 'Pending'
+                                    WHEN 2 THEN 'Paid'
                                     END as status
                                     , DATE_FORMAT(lastupdated, '%M %D, %Y') as lastupdated
                                     , sum(item.amount) as total
@@ -829,6 +829,32 @@ function companyExists($companyname){
     return false;    
 }
     //Update
+    
+function setInvoiceStatus($invoiceid, $newstatus){
+    global $mysqli;
+    global $db;
+    if (!$mysqli || $mysqli->connect_error) {
+            echo "<div class='error'>Connection error " .$mysqli->connect_error. " " .$mysqli->connect_error. "</div>";
+    } 
+    
+    if(!($stmt = $mysqli->prepare("UPDATE $db.invoice SET status = ? WHERE invoiceid = ?"))){
+        echo "<div class='error'>Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error. "</div>";
+    }
+    
+    if (!$stmt->bind_param("ii", $newstatus, $invoiceid)) {
+        echo "<div class='error'>Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error. "</div>";
+    }   
+    
+    if (!$stmt->execute()) {
+        echo "<div class='error'>Execute failed: (" . $stmt->errno . ") " . $stmt->error. "</div>";
+    }
+    
+    $userid = $stmt->insert_id;
+    
+    unset($stmt);
+    
+    return $userid;    
+}
 
 function updateItem($itemid, $invoiceid, $description, $amount){
     global $mysqli;

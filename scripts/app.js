@@ -18,6 +18,7 @@ var ajaxCall = function (form, action) {
                 } else if(data === "saved"){
                     //stay on page
                     //document.location.href = "invoice.php";
+                    return;
                 } else {
                     try{
                         data=JSON.parse(data);
@@ -25,14 +26,28 @@ var ajaxCall = function (form, action) {
                     if(typeof data === "object"){
                         if(data.status == "newinvoicesaved"){
                             document.location.href = "create.php?invoiceid="+data.id;
+                            return;
                         } else if(data.status === "itemdeleted"){
                             document.getElementById("item"+data.id).remove();
+                            return;
                         } else if(data.status === "newitemsaved") {
                             var newitem = document.getElementById("newitem");
                             addInvoiceIDToItem(newitem);
                             newitem.itemid = data.id;
                             newitem.id = "item"+data.id;
                             addNewItemLine();
+                            return;
+                        } else if(data.status === "statussaved"){
+                            try{
+                            var e = document.getElementById(data.id).parentElement.parentElement.parentElement.parentElement.getElementsByClassName('label')[0];
+                            if(e != undefined && e != null){
+                                e.textContent=data.newstatus;
+                            }
+                            }catch(e){};
+                            try{
+                                document.getElementById('paymentstatus').textContent="Paid";
+                            }catch(e){};
+                            
                             return;
                         }
                     }
