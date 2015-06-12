@@ -14,6 +14,16 @@
 //     e.preventDefault();
 // };
 
+var changeStatusHandler = function (e){
+    var invoiceid = e.target.id;
+    currentRow.id;
+    var form = document.createElement("form");
+    form.action='invoice.php';
+    form.invoiceid=invoiceid;
+    
+    ajaxCall(form, 'senditem');
+}
+
 var removeInvoceLineHandler = function (e) {
     var form = e.currentTarget.form;
     if(form.id !== "newitem"){
@@ -34,7 +44,7 @@ var addNewItemLine = function(){
         var invoiceLines = document.getElementById('invoice-lines');
         var insertbefore = document.getElementById('addnewitemsabove');
         var invoiceid = document.getElementById('invoice').elements.invoiceid.value;
-        var extraLine = '<div>        <form method="post" id="newitem" class="form-horizontal" action="invoice.php" onsubmit="ajaxCall(this, \'createitem\'); return false;" >            <input type="hidden" class="form-control" name="invoiceid" value="'+invoiceid+'">            <input type="hidden" class="form-control" name="itemid">            <div class="form-group">                <div class="col-sm-push-2 col-sm-10">                    <div class="row">                       <div class="col-sm-6 col-md-7 col-lg-8">                            <input type="text" class="form-control" placeholder="Description" name="description" required title="Please Enter an Item Description">                        </div>                        <div class="col-sm-3 col-md-3 col-lg-2">                           <div class="input-group m-b">                            <span class="input-group-addon">$</span>                                <input type="text" placeholder="Amount" class="form-control js-amount" name="amount" required pattern="\d+(\.\d{2})?" title="Needs to be a dollar amount. Ex: 1000.33">                            </div>                       </div>                        <div class="col-sm-3 col-md-3 col-lg-2 text-right">                            <button class="btn btn-danger js-remove-line" type="button"><i class="fa fa-trash"></i></button>                                <button class="btn btn-success "type="submit" ><i class="fa fa-floppy-o"></i></button>                        </div>                    </div>                  </div>            </div>        </form>        </div>';
+        var extraLine = '<div>        <form method="post" id="newitem" class="form-horizontal" action="invoice.php" onsubmit="ajaxCall(this, \'createitem\'); return false;" >            <input type="hidden" class="form-control" name="invoiceid" value="'+invoiceid+'">            <input type="hidden" class="form-control" name="itemid">            <div class="form-group">                <div class="col-sm-push-2 col-sm-10">                    <div class="row">                       <div class="col-sm-6 col-md-7 col-lg-8">                            <input type="text" class="form-control" placeholder="Description" name="description" required title="Please Enter an Item Description">                        </div>                        <div class="col-sm-3 col-md-3 col-lg-2">                           <div class="input-group m-b">                            <span class="input-group-addon">$</span>                                <input type="text" placeholder="Amount" class="form-control js-amount" name="amount" required pattern="\\d+(\\.\\d{2})?" title="Needs to be a dollar amount. Ex: 1000.33">                            </div>                       </div>                        <div class="col-sm-3 col-md-3 col-lg-2 text-right">                            <button class="btn btn-danger js-remove-line" type="button"><i class="fa fa-trash"></i></button>                                <button class="btn btn-success "type="submit" ><i class="fa fa-floppy-o"></i></button>                        </div>                    </div>                  </div>            </div>        </form>        </div>';
         var line = document.createElement('div');
         line.innerHTML=extraLine;
         invoiceLines.insertBefore(line, insertbefore);
@@ -98,6 +108,10 @@ document.addEventListener('DOMContentLoaded', function (event) {
         refreshAmountHandlerListener();
     }
     
+    var overview = document.getElementsByTagName("a").elements.getElementByClass('sendinvoice');
+    if(overview){
+        changeStatusHandler();
+    }
     
     var print = document.getElementById('print');
     if (print) {

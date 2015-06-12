@@ -43,9 +43,9 @@ function createCompanyTable($mysqli, $db){
     , userid INT
     , name VARCHAR( 255 ) NOT NULL 
     , streetaddress VARCHAR( 255 ) 
-    , city VARCHAR( 255 )
-    , state VARCHAR( 255 ) 
-    , zip INT
+    , city VARCHAR( 255 ) NOT NULL
+    , state VARCHAR( 255 ) NOT NULL
+    , zip INT NOT NULL
     , PRIMARY KEY(companyid)
     , FOREIGN KEY (userid) REFERENCES user(userid)
     , UNIQUE (name))";

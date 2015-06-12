@@ -24,6 +24,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if(isset($_POST['companyname'])){
         $companyname = $_POST['companyname'];
     }
+    if(isset($_POST['streetaddress'])){
+        $streetaddress = $_POST['streetaddress'];
+    }
+    if(isset($_POST['city'])){
+        $city = $_POST['city'];
+    }
+    if(isset($_POST['state'])){
+        $state = $_POST['state'];
+    }
+    if(isset($_POST['zip'])){
+        $zip = $_POST['zip'];
+    }
 }
 
 if (isset($action) && ($action === 'register')) {
@@ -62,7 +74,7 @@ if (isset($action) && ($action === 'register')) {
         //write data to database
         $_SESSION['username'] = $username;
         $userid = createUser($username, $password);
-        $companyid = createCompany($companyname, $userid);
+        $companyid = createCompany($companyname, $userid, $streetaddress, $city, $state, $zip);
         exit("success");
     }
     

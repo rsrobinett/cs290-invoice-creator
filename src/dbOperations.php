@@ -94,7 +94,7 @@ function createItem($invoiceid, $description, $amount){
 }
 
 
-function createCompany($companyname, $userid){
+function createCompany($companyname, $userid, $streetaddress, $city, $state, $zip){
     global $mysqli;
     global $db;
     
@@ -102,11 +102,11 @@ function createCompany($companyname, $userid){
             echo "<div class='error'>Connection error " .$mysqli->connect_error. " " .$mysqli->connect_error. "</div>";
     } 
     
-    if(!($stmt = $mysqli->prepare("INSERT INTO $db.company (userid, name) VALUES (?, ?)"))){
+    if(!($stmt = $mysqli->prepare("INSERT INTO $db.company (userid, name, streetaddress, city, state, zip) VALUES (? , ?, ? , ? , ? , ?)"))){
         echo "<div class='error'>Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error. "</div>";
     }
 
-    if (!$stmt->bind_param("is", $userid, $companyname)) {
+    if (!$stmt->bind_param("issssi", $userid, $companyname, $streetaddress, $city, $state, $zip)) {
         echo "<div class='error'>Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error. "</div>";
     }   
     
@@ -133,13 +133,13 @@ function getInvoicesByIDandSenderUsername($id, $username){
                                     , c.name as billtoname
                                     , c.companyid
                                     , c.streetaddress as billingaddress
-                                    , '' as billingcity
+                                    , c.city as billingcity
                                     , c.state as billingstate
                                     , c.zip as billingzip
                                     , s.name as sendername
                                     , s.companyid
                                     , s.streetaddress as senderaddress
-                                    , '' as sendercity
+                                    , s.city as sendercity
                                     , s.state as senderstate
                                     , s.zip as senderzip
                                     , DATE_FORMAT(duedate, '%M %D, %Y') as duedate
@@ -423,12 +423,12 @@ function getInvoicesByIDandBillToUsername($id, $username){
     if(!($stmt = $mysqli->prepare("SELECT inv.invoiceid
                                     , c.name as billtoname
                                     , c.streetaddress as billingaddress
-                                    , '' as billingcity
+                                    , c.city as billingcity
                                     , c.state as billingstate
                                     , c.zip as billingzip
                                     , s.name as sendername
                                     , s.streetaddress as senderaddress
-                                    , '' as sendercity
+                                    , s.city as sendercity
                                     , s.state as senderstate
                                     , s.zip as senderzip
                                     , DATE_FORMAT(duedate, '%M %D, %Y') as duedate
