@@ -17,12 +17,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     {
         $password = $_POST['password'];
     }
+    if(isset($_POST['repassword']))
+    {
+        $repassword = $_POST['repassword'];
+    }
     if(isset($_POST['companyname'])){
         $companyname = $_POST['companyname'];
     }
 }
 
-if ($action === 'register') {
+if (isset($action) && ($action === 'register')) {
     $errormsg="";
     //check if username exists
     if(usernameExists($username, $password)){
@@ -33,6 +37,25 @@ if ($action === 'register') {
     if(companyExists($companyname)){
         $errormsg = $errormsg."This company name ($companyname) is already taken please choose another company name.  ";
     }
+    
+    //check that passwords exist
+    if(empty($password)){
+        $errormsg = $errormsg."Please enter a password with length atleast 5 characters. ";
+    }
+    
+    if(empty($repassword)){
+        $errormsg = $errormsg."Please confirm your password. ";
+    }
+    
+    if($password !== $repassword){
+        $errormsg = $errormsg."Your passwords do not match.  ";
+    }
+    
+    if(strlen($password) < 5){
+        $errormsg = $errormsg."Your password must be at least 5 character in length.  ";
+    }
+    
+    //check that passwords are equal
     
     if(empty($errormsg))
     {
@@ -46,7 +69,7 @@ if ($action === 'register') {
     exit($errormsg);
 }
 
-if($action === 'login'){
+if(isset($action) && ($action === 'login')){
     if (empty($username))
     {
         exit('Username cannot be empty');

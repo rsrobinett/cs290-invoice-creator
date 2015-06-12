@@ -33,10 +33,11 @@ var ajaxCall = function (form, action) {
                             newitem.itemid = data.id;
                             newitem.id = "item"+data.id;
                             addNewItemLine();
+                            return;
                         }
                     }
-                  errortxt += data;
                 }
+                errortxt += data;
             }
             else if(httpRequest.status == 400) {
                 errortxt += ' There was an error 400';

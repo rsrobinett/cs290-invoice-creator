@@ -144,15 +144,15 @@
                                     <label class="col-sm-2 control-label">Invoce date</label>
                                     <div class="col-sm-3">
                                         <div class="input-group date">
-                                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input type="text" class="form-control js-date" id="invoice-date" name="invoicedate" required pattern="^(0[1-9]|1[0-2])\/(0[1-9]|1\d|2\d|3[01])\/(19|20)\d{2}" title="Please enter or select a valid date. Format: MM/DD/YY">
-                                        </div>
+                                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input type="text" class="form-control" id="invoice-date" name="invoicedate">
+                                        </div>                                        
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="col-sm-2 control-label">Due date</label>
                                     <div class="col-sm-3">
                                         <div class="input-group date">
-                                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input type="text" class="form-control js-date" id="due-date" name="duedate" required pattern="^(0[1-9]|1[0-2])\/(0[1-9]|1\d|2\d|3[01])\/(19|20)\d{2}" title="Please enter or select a valid date. Format: MM/DD/YY">
+                                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input type="text" class="form-control" id="due-date" name="duedate">
                                         </div>                                        
                                     </div>
                                 </div>
@@ -162,18 +162,17 @@
                                     <div class="form-group">
                                         <div class="col-sm-push-2 col-sm-10">
                                             <div class="row">
-                                                <div class="col-sm-6 col-md-7 col-lg-8">
-                                                    <input type="text" class="form-control js-description" placeholder="Description" name="description" required>
+                                                <div class="col-md-8">
+                                                    <input type="text" class="form-control" placeholder="Description" name="description">
                                                 </div>
-                                                <div class="col-sm-3 col-md-3 col-lg-2">
+                                                <div class="col-md-3">
                                                     <div class="input-group m-b">
-                                                        <span class="input-group-addon">$</span>
-                                                        <input type="text" placeholder="Amount" class="form-control" name="amount" required pattern="^[1-9]\d*(((,\d{3}){1})?(\.\d{0,2})?)" title="Needs to be a dollar amount. Ex: 1,000.33">
+                                                    <span class="input-group-addon">$</span>
+                                                        <input type="text" placeholder="Amount" class="form-control js-amount" name="amount">
                                                     </div>
                                                 </div>
-                                                <div class="col-sm-3 col-md-3 col-lg-2 text-right">
+                                                <div class="col-md-1 text-right">
                                                     <button class="btn btn-danger js-remove-line" type="button"><i class="fa fa-trash"></i></button>    
-                                                    <button class="btn btn-success js-remove-line" type="button"><i class="fa fa-floppy-o"></i></button>    
                                                 </div>
                                             </div>  
                                         </div>
@@ -206,8 +205,8 @@
                                 <div class="hr-line-dashed"></div>
                                 <div class="form-group">
                                     <div class="col-sm-4 col-sm-offset-2">
-                                        <!-- <button class="btn btn-white" type="submit">Cancel</button> -->
-                                        <!-- <button class="btn btn-default  " type="submit">Save draft</button> -->
+                                        <button class="btn btn-white" type="submit">Cancel</button>
+                                        <button class="btn btn-default  " type="submit">Save draft</button>
                                         <button class="btn btn-primary" type="submit" id="send">Send</button>
                                     </div>
                                 </div>

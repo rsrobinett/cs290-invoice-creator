@@ -45,12 +45,12 @@ function prefillItems($id, $username){
                 <div class="col-sm-push-2 col-sm-10">
                     <div class="row">
                         <div class="col-sm-6 col-md-7 col-lg-8">
-                            <input type="text" class="form-control" placeholder="Description" name="description" value="'.$item['description'].'">
+                            <input type="text" class="form-control" placeholder="Description" name="description" value="'.$item['description'].'" required title="Please Enter an Item Description">
                         </div>
                         <div class="col-sm-3 col-md-3 col-lg-2">
                             <div class="input-group m-b">
                             <span class="input-group-addon">$</span>
-                                <input type="text" placeholder="Amount" class="form-control js-amount" name="amount" value="'.$item['amount'].'">
+                                <input type="text" placeholder="Amount" class="form-control js-amount" name="amount" value="'.$item['amount'].'" required pattern="\d+(\.\d{2})?" title="Needs to be a dollar amount. Ex: 1000.33">
                             </div>
                         </div>
                         <div class="col-sm-3 col-md-3 col-lg-2 text-right">
@@ -94,7 +94,7 @@ if(isset($_GET['invoiceid'])){
         <div class="col-sm-3">
             <div class="input-group date">
                 <span class="input-group-addon" ><i class="fa fa-calendar"></i></span>
-                <input type="text" class="form-control" id="invoice-date" name="invoicedate" value="<?php echo prefilledInvoiceValue($invoice,'invoicedate') ?>">
+                <input type="text" class="form-control" id="invoice-date" name="invoicedate" value="<?php echo date("mm/dd/YYYY", strtotime(prefilledInvoiceValue($invoice,'invoicedate'))); ?>" required pattern="^(0[1-9]|1[0-2])\/(0[1-9]|1\d|2\d|3[01])\/(19|20)\d{2}" title="Please enter or select a valid date. Format: MM/DD/YY">
             </div>                                        
         </div>
     </div>
@@ -103,7 +103,7 @@ if(isset($_GET['invoiceid'])){
         <div class="col-sm-3">
             <div class="input-group date">
                 <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                <input type="text" class="form-control" id="due-date" name="duedate" value="<?php echo prefilledInvoiceValue($invoice,'duedate') ?>">
+                <input type="text" class="form-control" id="due-date" name="duedate" value="<?php echo date("mm/dd/YYYY", strtotime(prefilledInvoiceValue($invoice,'duedate'))); ?>" required pattern="^(0[1-9]|1[0-2])\/(0[1-9]|1\d|2\d|3[01])\/(19|20)\d{2}" title="Please enter or select a valid date. Format: MM/DD/YY">
             </div>                                        
         </div>
     </div>
@@ -138,12 +138,12 @@ if(isset($_GET['invoiceid'])){
                 <div class="col-sm-push-2 col-sm-10">
                     <div class="row">
                         <div class="col-sm-6 col-md-7 col-lg-8">
-                            <input type="text" class="form-control" placeholder="Description" name="description">
+                            <input type="text" class="form-control" placeholder="Description" name="description" required title="Please Enter an Item Description">
                         </div>
                         <div class="col-sm-3 col-md-3 col-lg-2">
                             <div class="input-group m-b">
                             <span class="input-group-addon">$</span>
-                                <input type="text" placeholder="Amount" class="form-control js-amount" name="amount">
+                                <input type="text" placeholder="Amount" class="form-control js-amount" name="amount" required pattern="\d+(\.\d{2})?" title="Needs to be a dollar amount. Ex: 1000.33">
                             </div>
                         </div>
                         <div class="col-sm-3 col-md-3 col-lg-2 text-right">

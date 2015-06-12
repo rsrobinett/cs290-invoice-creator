@@ -1,18 +1,18 @@
 /* jshint devel:true */
 'use strict';
 
-var addInvoiceLineHandler = function (e) {
-    var invoiceLines = document.getElementById('invoice-lines');
-    var extraLine = '<div class="col-sm-push-2 col-sm-10"><div class="row"><div class="col-sm-3 col-md-3 col-lg-2"><input type="text" class="form-control" placeholder="Description"></div><div class="col-sm-3 col-md-3 col-lg-2"><div class="input-group m-b"><span class="input-group-addon">$</span><input type="text" placeholder="Amount" class="form-control js-amount"></div></div><div class="col-sm-3 col-md-3 col-lg-2 text-right"><button class="btn btn-danger js-remove-line" type="button"><i class="fa fa-trash"></i></button><button class="btn btn-success" type="button"><i class="fa fa-floppy-o"></i></button></div></div></div>';
+// var addInvoiceLineHandler = function (e) {
+//     var invoiceLines = document.getElementById('invoice-lines');
+//     var extraLine = '<div class="col-sm-push-2 col-sm-10"><div class="row"><div class="col-sm-3 col-md-3 col-lg-2"><input type="text" class="form-control" placeholder="Description"></div><div class="col-sm-3 col-md-3 col-lg-2"><div class="input-group m-b"><span class="input-group-addon">$</span><input type="text" placeholder="Amount" class="form-control js-amount"></div></div><div class="col-sm-3 col-md-3 col-lg-2 text-right"><button class="btn btn-danger js-remove-line" type="button"><i class="fa fa-trash"></i></button><button class="btn btn-success" type="button"><i class="fa fa-floppy-o"></i></button></div></div></div>';
 
-    var invoice = document.createElement('div');
-    invoice.classList.add('form-group');
-    invoice.innerHTML = extraLine;
-    invoiceLines.appendChild(invoice);
-    refreshRemoveInvoiceLineHandlerListener();
-    refreshAmountHandlerListener();
-    e.preventDefault();
-};
+//     var invoice = document.createElement('div');
+//     invoice.classList.add('form-group');
+//     invoice.innerHTML = extraLine;
+//     invoiceLines.appendChild(invoice);
+//     refreshRemoveInvoiceLineHandlerListener();
+//     refreshAmountHandlerListener();
+//     e.preventDefault();
+// };
 
 var removeInvoceLineHandler = function (e) {
     var form = e.currentTarget.form;
@@ -34,7 +34,7 @@ var addNewItemLine = function(){
         var invoiceLines = document.getElementById('invoice-lines');
         var insertbefore = document.getElementById('addnewitemsabove');
         var invoiceid = document.getElementById('invoice').elements.invoiceid.value;
-        var extraLine = '<div>        <form method="post" id="newitem" class="form-horizontal" action="invoice.php" onsubmit="ajaxCall(this, \'createitem\'); return false;" >            <input type="hidden" class="form-control" name="invoiceid" value="'+invoiceid+'">            <input type="hidden" class="form-control" name="itemid">            <div class="form-group">                <div class="col-sm-push-2 col-sm-10">                    <div class="row">                       <div class="col-sm-6 col-md-7 col-lg-8">                            <input type="text" class="form-control" placeholder="Description" name="description">                        </div>                        <div class="col-sm-3 col-md-3 col-lg-2">                           <div class="input-group m-b">                            <span class="input-group-addon">$</span>                                <input type="text" placeholder="Amount" class="form-control js-amount" name="amount">                            </div>                       </div>                        <div class="col-sm-3 col-md-3 col-lg-2 text-right">                            <button class="btn btn-danger js-remove-line" type="button"><i class="fa fa-trash"></i></button>                                <button class="btn btn-success "type="submit" ><i class="fa fa-floppy-o"></i></button>                        </div>                    </div>                  </div>            </div>        </form>        </div>';
+        var extraLine = '<div>        <form method="post" id="newitem" class="form-horizontal" action="invoice.php" onsubmit="ajaxCall(this, \'createitem\'); return false;" >            <input type="hidden" class="form-control" name="invoiceid" value="'+invoiceid+'">            <input type="hidden" class="form-control" name="itemid">            <div class="form-group">                <div class="col-sm-push-2 col-sm-10">                    <div class="row">                       <div class="col-sm-6 col-md-7 col-lg-8">                            <input type="text" class="form-control" placeholder="Description" name="description" required title="Please Enter an Item Description">                        </div>                        <div class="col-sm-3 col-md-3 col-lg-2">                           <div class="input-group m-b">                            <span class="input-group-addon">$</span>                                <input type="text" placeholder="Amount" class="form-control js-amount" name="amount" required pattern="\d+(\.\d{2})?" title="Needs to be a dollar amount. Ex: 1000.33">                            </div>                       </div>                        <div class="col-sm-3 col-md-3 col-lg-2 text-right">                            <button class="btn btn-danger js-remove-line" type="button"><i class="fa fa-trash"></i></button>                                <button class="btn btn-success "type="submit" ><i class="fa fa-floppy-o"></i></button>                        </div>                    </div>                  </div>            </div>        </form>        </div>';
         var line = document.createElement('div');
         line.innerHTML=extraLine;
         invoiceLines.insertBefore(line, insertbefore);
@@ -73,48 +73,21 @@ var updateTotal = function () {
 }
 
 
-// var validator = function() {
-//     var regexCurrency  = /^[1-9]\d*(((,\d{3}){1})?(\.\d{0,2})?)$/;
-//     var numStr = "123.20";
-//     if (regexCurrency.test(numStr))
-//         alert("Number is valid");
-// }
-
-
-// var createJson = function(e) {
-//     e.preventDefault();
-//     var form = document.getElementById('invoice');
-//     var json = {lines:[]};
-
-//     for (var i = 0; i < form.length; i++){
-//         if (!!form[i].name) {
-
-//             if(form[i].name === 'description') {
-//                 var line = {};
-
-//                 line[encodeURIComponent(form[i].name)] = encodeURIComponent(form[i].value);
-//                 line[encodeURIComponent(form[i+1].name)] = encodeURIComponent(form[i+1].value);
-//                 line['line'] = i;
-//                 json.lines.push(line);
-//             } else {
-//                 json[encodeURIComponent(form[i].name)] = encodeURIComponent(form[i].value);
-//             }
-//         }
-//     }
-
-//     console.log(JSON.stringify(json));
-// }
-
 document.addEventListener('DOMContentLoaded', function (event) {
     
     var invoice = document.getElementById('invoice');
     if (invoice) {
-
-        var pickerInvoiceDate = new Pikaday({ field: document.getElementById('invoice-date') });
-        var pickerDueDate = new Pikaday({ field: document.getElementById('due-date') });
-
-        // var sendButton = document.getElementById('send');
-        // sendButton.addEventListener('click', createJson);
+        var pickerInvoiceDate = new Pikaday({ 
+            field: document.getElementById('invoice-date'), 
+            format: 'MM/DD/YYYY'
+        });
+        
+        var pickerDueDate = new Pikaday({ 
+            field: document.getElementById('due-date'),
+            format: 'MM/DD/YYYY'
+        });
+        pickerInvoiceDate.setMoment(moment());
+        pickerDueDate.setMoment(moment().add(15, 'days'));
     }
     
     var invoicelines = document.getElementById('invoice-lines');

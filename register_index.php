@@ -48,8 +48,7 @@ if(isset($_SESSION['username']) && (!isset($_GET['action']))){
             <p class="m-t"> <small>OSU CS290 - Rachelle Robinett &copy;2015</small> </p>
         </div>
     </div>
-    <script src="app.js"></script>
-    <script src="scripts/vendor.js"></script>
+    <script src="scripts/app.js"></script>
     <script src="scripts/plugins.js"></script>
     <script src="scripts/main.js"></script>
 </body>

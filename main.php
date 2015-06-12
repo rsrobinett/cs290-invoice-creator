@@ -16,7 +16,7 @@ function createInvoiceTable($username){
         echo "<td> $invoice[total] </td>";
         echo '<td>
             <div class="invoice-actions">
-                <a href="'.getPath().'/create.php?invoiceid='.$invoice['invoiceid'].'"><i class="fa fa-pencil fa-2x"></i></a><a href="#"><i class="fa fa-trash fa-2x"></i></a>    
+                <a href="'.getPath().'/create.php?invoiceid='.$invoice['invoiceid'].'"><i class="fa fa-pencil fa-2x"></i></a><a href="#"><i class="fa fa-paper-plane fa-2x"></i></a>    
             </div></td></tr>';
     }
 }

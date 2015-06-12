@@ -41,12 +41,30 @@ function AddOrUpdateInvoice(){
         $errormsg = $errormsg."You must select a company to create an invoice. ";
     }
     if(isset($_POST['invoicedate']) && !empty($_POST['invoicedate'])){
-        $invoicedate = $_POST['invoicedate'];
+        $strinvdate = $_POST['invoicedate'];
+        
+        $date = date_parse($strinvdate);
+        if (!($date["error_count"] == 0 && checkdate($date["month"], $date["day"], $date["year"]))){
+            $errormsg = $errormsg."Invalid date";
+        }
+        else{
+            $invoicedate=date("Y-m-d H:i:s", strtotime($strinvdate));
+        }
     }else {
         $errormsg = $errormsg."An invoice date is required to create an invoice.  ";
     }
     if(isset($_POST['duedate'])  && !empty($_POST['duedate'])){
-        $duedate = $_POST['duedate'];
+        
+        $strduedate = $_POST['duedate'];
+        
+        $date = date_parse($strduedate);
+        if (!($date["error_count"] == 0 && checkdate($date["month"], $date["day"], $date["year"]))){
+            $errormsg = $errormsg."Invalid date";
+        }
+        else {
+            $duedate=date("Y-m-d H:i:s", strtotime($strduedate));
+        }
+
     } else {
         $errormsg = $errormsg."An due date is required to create an invoice.  ";
     }
