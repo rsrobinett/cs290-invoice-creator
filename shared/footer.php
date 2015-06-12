@@ -9,9 +9,9 @@
             </div>
         </div>
     </div>
+    <script src="scripts/plugins.js"></script>
     <script src="scripts/main.js"></script>
     <script src="scripts/app.js"></script>
-    <script src="scripts/plugins.js"></script>
 </body>
 
 </html>

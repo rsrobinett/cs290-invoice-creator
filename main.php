@@ -1,4 +1,4 @@
-<?php $pagetitle = Template;?>
+<?php $pagetitle = 'Accounts Receivable';?>
 
 <?php include 'shared/head.php';?>
 <?php include 'shared/navigation.php';?>

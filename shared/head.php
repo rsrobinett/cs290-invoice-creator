@@ -12,7 +12,6 @@ if(!isset($_SESSION['username'])){
 }
 
 ;?>
-
 <!doctype html>
 <html class="no-js" lang="">
 

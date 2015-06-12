@@ -15,10 +15,26 @@ var ajaxCall = function (form, action) {
                 if(data === "success"){
                     //redirect to main page here
                     document.location.href = "main.php";
-                }  if(data === "saved"){
+                } else if(data === "saved"){
                     //stay on page
-                    //document.location.href = "main.php";
+                    //document.location.href = "invoice.php";
                 } else {
+                    try{
+                        data=JSON.parse(data);
+                    }catch(e){};
+                    if(typeof data === "object"){
+                        if(data.status == "newinvoicesaved"){
+                            document.location.href = "create.php?invoiceid="+data.id;
+                        } else if(data.status === "itemdeleted"){
+                            document.getElementById("item"+data.id).remove();
+                        } else if(data.status === "newitemsaved") {
+                            var newitem = document.getElementById("newitem");
+                            addInvoiceIDToItem(newitem);
+                            newitem.itemid = data.id;
+                            newitem.id = "item"+data.id;
+                            addNewItemLine();
+                        }
+                    }
                   errortxt += data;
                 }
             }

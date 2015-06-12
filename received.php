@@ -1,4 +1,4 @@
-<?php $pagetitle = Recieved;?>
+<?php $pagetitle = "Accounts Payable";?>
 
 <?php include 'shared/head.php';?>
 <?php include 'shared/navigation.php';?>

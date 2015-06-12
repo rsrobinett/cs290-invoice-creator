@@ -1,3 +1,19 @@
 
+
+***Need to fix
+-date picker not picking date
+-date is not in a format the SQL can user
+-change overview to accounts receivable
+-change Received to accounts payable
+-click save and there is no indication that it saved
+
+***Libraries
+Using date picker library https://github.com/dbushell/Pikaday
+
+
+***Known errors
 On viewinvoice.php?invoiceid=
 if an invoiceid is passed in get that is not associated with the user an unhandles error occurs.  At least it's better than seeing the wrong clients invoice. 
+
+
+

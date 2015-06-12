@@ -43,6 +43,7 @@ function createCompanyTable($mysqli, $db){
     , userid INT
     , name VARCHAR( 255 ) NOT NULL 
     , streetaddress VARCHAR( 255 ) 
+    , city VARCHAR( 255 )
     , state VARCHAR( 255 ) 
     , zip INT
     , PRIMARY KEY(companyid)
@@ -173,8 +174,6 @@ function displayDropItemTableMessage($mysqli, $db){
         dropItemTable($mysqli, $db);
     }
 }
-
-
 
 ?>
 
