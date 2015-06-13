@@ -6,7 +6,6 @@
 <?php
    
     $username = $_SESSION['username'];
-    //$companyid = getCompanyIDbyUsername($username);
     
     $company = getCompanySettingsbyUsername($username);
 ?>

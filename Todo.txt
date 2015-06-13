@@ -16,8 +16,8 @@ fontawesome (for icons)
 bootstrap (css)
 
 ***Known errors
-On viewinvoice.php?invoiceid=
-if an invoiceid is passed in get that is not associated with the user an unhandles error occurs.  At least it's better than seeing the wrong clients invoice. 
+On "viewinvoice.php?invoiceid=", if an invoiceid is passed in get that is not associated with the user an unhandles error occurs.  At least it's better than seeing the wrong clients invoice. 
+On Accounts Recievable tab (and else where) unsued icons aren't greyed out when they don't do anything.  Instead an error shows, but ideally it'd just be unuseable.  
 
 
 
