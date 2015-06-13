@@ -29,11 +29,12 @@ var ajaxCall = function (form, action) {
                             return;
                         } else if(data.status === "itemdeleted"){
                             document.getElementById("item"+data.id).remove();
+                            updateTotal();
                             return;
                         } else if(data.status === "newitemsaved") {
                             var newitem = document.getElementById("newitem");
                             addInvoiceIDToItem(newitem);
-                            newitem.itemid = data.id;
+                            newitem.itemid.value = data.id;
                             newitem.id = "item"+data.id;
                             addNewItemLine();
                             return;

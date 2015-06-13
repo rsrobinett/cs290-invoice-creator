@@ -47,7 +47,9 @@ var addNewItemLine = function(){
         line.innerHTML=extraLine;
         invoiceLines.insertBefore(line, insertbefore);
         refreshRemoveInvoiceLineHandlerListener();
+        refreshAmountHandlerListener();
     }
+    updateTotal();
 }
 
 var addInvoiceIDToItem = function (item){
@@ -83,7 +85,7 @@ var updateTotal = function () {
 
 
 document.addEventListener('DOMContentLoaded', function (event) {
-    
+    refreshRemoveInvoiceLineHandlerListener;
     var invoice = document.getElementById('invoice');
     if (invoice) {
         var pickerInvoiceDate = new Pikaday({ 
