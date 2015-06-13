@@ -167,11 +167,18 @@ if($_POST['action'] === 'senditem'){
     } else {
         $errormsg = $errormsg."You must send invoiceid to change the status of an item.  ";
     }
-    
+        
     if(empty($errormsg)){
-        setInvoiceStatus($invoiceid, 1);   
-        $returnvalue = ['status'=>'statussaved', 'id'=>$invoiceid ,'newstatus'=>"Pending"];
+        $requestedstatus = 1;
+        $newstatus = setInvoiceStatus($invoiceid, $requestedstatus);   
+
+        if($newstatus != $requestedstatus){
+            $errormsg = $errormsg = $errormsg."Invalid Status Change Request.  You can not change a status from Paid to Pending.  " ;
+        }else{
+        
+        $returnvalue = ['status'=>'statussaved', 'id'=>$invoiceid ,'newstatus'=>'Pending'];
         exit(json_encode($returnvalue)); 
+        }
         
     }
     

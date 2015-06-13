@@ -7,7 +7,7 @@ global $mysqli;
 if (!$mysqli) {
     $mysqli = createDBConnection($dbhost, $dbuser, $dbpass, $dbname);
     if (!$mysqli || $mysqli->connect_error) {
-        echo "<div class='error'>Connection error " .$mysqli->connect_error. " " .$mysqli->connect_error. "</div>";
+        echo "Connection error " .$mysqli->connect_error. " " .$mysqli->connect_error. "";
     }
 }
 */
@@ -17,21 +17,21 @@ function createUser($username, $password){
     global $mysqli;
     global $db;
     if (!$mysqli || $mysqli->connect_error) {
-            echo "<div class='error'>Connection error " .$mysqli->connect_error. " " .$mysqli->connect_error. "</div>";
+            echo "Connection error " .$mysqli->connect_error. " " .$mysqli->connect_error. "";
     } 
     
     if(!($stmt = $mysqli->prepare("INSERT INTO $db.user (username, hashpass) VALUES (?, ?)"))){
-        echo "<div class='error'>Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error. "</div>";
+        echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error. "";
     }
     
     $hashpass = trim(base64_encode(hash('sha256',$password)));
 
     if (!$stmt->bind_param("ss", $username, $hashpass )) {
-        echo "<div class='error'>Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error. "</div>";
+        echo "Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error. "";
     }   
     
     if (!$stmt->execute()) {
-        echo "<div class='error'>Execute failed: (" . $stmt->errno . ") " . $stmt->error. "</div>";
+        echo "Execute failed: (" . $stmt->errno . ") " . $stmt->error. "";
     }
     
     $userid = $stmt->insert_id;
@@ -45,19 +45,19 @@ function createInvoice($senderid, $billtoid, $invoicedate, $duedate, $comment){
     global $mysqli;
     global $db;
     if (!$mysqli || $mysqli->connect_error) {
-            echo "<div class='error'>Connection error " .$mysqli->connect_error. " " .$mysqli->connect_error. "</div>";
+            echo "Connection error " .$mysqli->connect_error. " " .$mysqli->connect_error. "";
     } 
     
     if(!($stmt = $mysqli->prepare("INSERT INTO $db.invoice (senderid, billtoid, invoicedate, duedate, comment, status, lastupdated) VALUES (?, ?, ?, ?, ?, 0, NOW())"))){
-        echo "<div class='error'>Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error. "</div>";
+        echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error. "";
     }
     
     if (!$stmt->bind_param("iisss", $senderid, $billtoid, $invoicedate, $duedate, $comment)) {
-        echo "<div class='error'>Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error. "</div>";
+        echo "Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error. "";
     }   
     
     if (!$stmt->execute()) {
-        echo "<div class='error'>Execute failed: (" . $stmt->errno . ") " . $stmt->error. "</div>";
+        echo "Execute failed: (" . $stmt->errno . ") " . $stmt->error. "";
     }
     
     $userid = $stmt->insert_id;
@@ -71,19 +71,19 @@ function createItem($invoiceid, $description, $amount){
     global $mysqli;
     global $db;
     if (!$mysqli || $mysqli->connect_error) {
-            echo "<div class='error'>Connection error " .$mysqli->connect_error. " " .$mysqli->connect_error. "</div>";
+            echo "Connection error " .$mysqli->connect_error. " " .$mysqli->connect_error. "";
     } 
     
     if(!($stmt = $mysqli->prepare("INSERT INTO $db.item (invoiceid, description, amount) VALUES (?, ?, ?)"))){
-        echo "<div class='error'>Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error. "</div>";
+        echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error. "";
     }
     
     if (!$stmt->bind_param("isd", $invoiceid, $description, $amount)) {
-        echo "<div class='error'>Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error. "</div>";
+        echo "Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error. "";
     }   
     
     if (!$stmt->execute()) {
-        echo "<div class='error'>Execute failed: (" . $stmt->errno . ") " . $stmt->error. "</div>";
+        echo "Execute failed: (" . $stmt->errno . ") " . $stmt->error. "";
     }
     
     $userid = $stmt->insert_id;
@@ -99,19 +99,19 @@ function createCompany($companyname, $userid, $streetaddress, $city, $state, $zi
     global $db;
     
     if (!$mysqli || $mysqli->connect_error) {
-            echo "<div class='error'>Connection error " .$mysqli->connect_error. " " .$mysqli->connect_error. "</div>";
+            echo "Connection error " .$mysqli->connect_error. " " .$mysqli->connect_error. "";
     } 
     
     if(!($stmt = $mysqli->prepare("INSERT INTO $db.company (userid, name, streetaddress, city, state, zip) VALUES (? , ?, ? , ? , ? , ?)"))){
-        echo "<div class='error'>Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error. "</div>";
+        echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error. "";
     }
 
     if (!$stmt->bind_param("issssi", $userid, $companyname, $streetaddress, $city, $state, $zip)) {
-        echo "<div class='error'>Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error. "</div>";
+        echo "Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error. "";
     }   
     
     if (!$stmt->execute()) {
-        echo "<div class='error'>Execute failed: (" . $stmt->errno . ") " . $stmt->error. "</div>";
+        echo "Execute failed: (" . $stmt->errno . ") " . $stmt->error. "";
     }
     
     $companyid = $stmt->insert_id;
@@ -122,6 +122,40 @@ function createCompany($companyname, $userid, $streetaddress, $city, $state, $zi
 }
 
     //Read
+    
+function getInvoiceStatus($invoiceid){
+    global $mysqli;
+    global $db;
+    if (!$mysqli || $mysqli->connect_error) {
+            echo "Connection error " .$mysqli->connect_error. " " .$mysqli->connect_error. "";
+    } 
+    
+    if(!($stmt = $mysqli->prepare("Select status FROM $db.invoice WHERE invoiceid = ?"))){
+        echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error. "";
+    }
+    
+    if (!$stmt->bind_param("i", $invoiceid)) {
+        echo "Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error. "";
+    }   
+    
+    if (!$stmt->execute()) {
+        echo "Execute failed: (" . $stmt->errno . ") " . $stmt->error. "";
+    }
+    $status = null;
+    if(!$stmt->bind_result($status)){
+        echo "Binding results failed: (" . $stmt->errno . ") " . $stmt->error. "";
+    }
+    
+    $returnstatus = null;
+    while($stmt->fetch()){
+        $returnstatus = $status;
+    }
+
+    
+    unset($stmt);
+    
+    return $returnstatus;    
+}
 
 function getInvoicesByIDandSenderUsername($id, $username){
     global $mysqli;
@@ -157,15 +191,15 @@ function getInvoicesByIDandSenderUsername($id, $username){
                                     WHERE inv.invoiceid = ? and s.userid = ?;
                                    "))){
                                         
-        echo "<div class='error'>Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error. "</div>";
+        echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error. "";
     }
     
     if (!$stmt->bind_param("ii", $id, $userid)) {
-        echo "<div class='error'>Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error. "</div>";
+        echo "Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error. "";
     }
 
     if (!$stmt->execute()) {
-        echo "<div class='error'>Execute failed: (" . $stmt->errno . ") " . $stmt->error. "</div>";
+        echo "Execute failed: (" . $stmt->errno . ") " . $stmt->error. "";
     }   
 
     $invoiceid = null;
@@ -192,7 +226,7 @@ function getInvoicesByIDandSenderUsername($id, $username){
     
     
     if (!$stmt->bind_result($invoiceid,$billtoname,$billtoid,$billingaddress,$billingcity,$billingstate,$billingzip,$sendername,$senderid,$senderaddress,$sendercity,$senderstate,$ssenderzip,$duedate,$invoicedate,$status,$lastupdated,$comment)) {
-        echo "<div class='error'>Binding results failed: (" . $stmt->errno . ") " . $stmt->error. "</div>";
+        echo "Binding results failed: (" . $stmt->errno . ") " . $stmt->error. "";
     }    
     
     $invoicearray = array();
@@ -247,19 +281,19 @@ function getInvoiceTotalByInvoiceIDandSenderUsername($id, $username){
                                     LEFT JOIN $db.company c ON inv.senderid = c.companyid
                                     WHERE it.invoiceid = ? and c.userid = ?
                                 "))){
-    echo "<div class='error'>Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error. "</div>";
+    echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error. "";
     }
     
     if (!$stmt->bind_param("ii", $id, $userid)) {
-        echo "<div class='error'>Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error. "</div>";
+        echo "Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error. "";
     }
 
     if (!$stmt->execute()) {
-        echo "<div class='error'>Execute failed: (" . $stmt->errno . ") " . $stmt->error. "</div>";
+        echo "Execute failed: (" . $stmt->errno . ") " . $stmt->error. "";
     }
     $total = null;
     if (!$stmt->bind_result( $total)) {
-        echo "<div class='error'>Binding results failed: (" . $stmt->errno . ") " . $stmt->error. "</div>";
+        echo "Binding results failed: (" . $stmt->errno . ") " . $stmt->error. "";
     }
     
      while($stmt->fetch()){}
@@ -283,19 +317,19 @@ function getInvoiceTotalByInvoiceIDandBilltoUsername($id, $username){
                                     LEFT JOIN $db.company c ON inv.billtoid = c.companyid
                                     WHERE it.invoiceid = ? and c.userid = ?
                                 "))){
-    echo "<div class='error'>Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error. "</div>";
+    echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error. "";
     }
     
     if (!$stmt->bind_param("ii", $id, $userid)) {
-        echo "<div class='error'>Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error. "</div>";
+        echo "Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error. "";
     }
 
     if (!$stmt->execute()) {
-        echo "<div class='error'>Execute failed: (" . $stmt->errno . ") " . $stmt->error. "</div>";
+        echo "Execute failed: (" . $stmt->errno . ") " . $stmt->error. "";
     }
     $total = null;
     if (!$stmt->bind_result( $total)) {
-        echo "<div class='error'>Binding results failed: (" . $stmt->errno . ") " . $stmt->error. "</div>";
+        echo "Binding results failed: (" . $stmt->errno . ") " . $stmt->error. "";
     }
     
      while($stmt->fetch()){}
@@ -321,15 +355,15 @@ function getItemsByInvoiceIDandSenderUsername($id, $username){
                                     LEFT JOIN $db.company c ON inv.senderid = c.companyid
                                     WHERE it.invoiceid = ? and c.userid = ?
                                 "))){
-    echo "<div class='error'>Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error. "</div>";
+    echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error. "";
     }
     
     if (!$stmt->bind_param("ii", $id, $userid)) {
-        echo "<div class='error'>Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error. "</div>";
+        echo "Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error. "";
     }
 
     if (!$stmt->execute()) {
-        echo "<div class='error'>Execute failed: (" . $stmt->errno . ") " . $stmt->error. "</div>";
+        echo "Execute failed: (" . $stmt->errno . ") " . $stmt->error. "";
     }   
     
     $itemid = null;
@@ -338,7 +372,7 @@ function getItemsByInvoiceIDandSenderUsername($id, $username){
     $amount = null;
     
     if (!$stmt->bind_result($itemid, $invoiceid, $description, $amount)) {
-        echo "<div class='error'>Binding results failed: (" . $stmt->errno . ") " . $stmt->error. "</div>";
+        echo "Binding results failed: (" . $stmt->errno . ") " . $stmt->error. "";
     }
     $itemarr = array();
     while($stmt->fetch()){
@@ -375,15 +409,15 @@ function getItemsByInvoiceIDandBillToUsername($id, $username){
                                     LEFT JOIN $db.company c ON inv.billtoid = c.companyid
                                     WHERE it.invoiceid = ? and c.userid = ?
                                 "))){
-    echo "<div class='error'>Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error. "</div>";
+    echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error. "";
     }
     
     if (!$stmt->bind_param("ii", $id, $userid)) {
-        echo "<div class='error'>Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error. "</div>";
+        echo "Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error. "";
     }
 
     if (!$stmt->execute()) {
-        echo "<div class='error'>Execute failed: (" . $stmt->errno . ") " . $stmt->error. "</div>";
+        echo "Execute failed: (" . $stmt->errno . ") " . $stmt->error. "";
     }   
     
     $itemid = null;
@@ -392,7 +426,7 @@ function getItemsByInvoiceIDandBillToUsername($id, $username){
     $amount = null;
     
     if (!$stmt->bind_result($itemid, $invoiceid, $description, $amount)) {
-        echo "<div class='error'>Binding results failed: (" . $stmt->errno . ") " . $stmt->error. "</div>";
+        echo "Binding results failed: (" . $stmt->errno . ") " . $stmt->error. "";
     }
     $itemarr = array();
     while($stmt->fetch()){
@@ -446,15 +480,15 @@ function getInvoicesByIDandBillToUsername($id, $username){
                                     WHERE status > 0 AND inv.invoiceid = ? AND c.userid = ?;
                                    "))){
                                         
-        echo "<div class='error'>Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error. "</div>";
+        echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error. "";
     }
     
     if (!$stmt->bind_param("ii", $id, $userid)) {
-        echo "<div class='error'>Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error. "</div>";
+        echo "Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error. "";
     }
 
     if (!$stmt->execute()) {
-        echo "<div class='error'>Execute failed: (" . $stmt->errno . ") " . $stmt->error. "</div>";
+        echo "Execute failed: (" . $stmt->errno . ") " . $stmt->error. "";
     }   
 
     $invoiceid = null;
@@ -479,7 +513,7 @@ function getInvoicesByIDandBillToUsername($id, $username){
     
     
     if (!$stmt->bind_result($invoiceid,$billtoname,$billingaddress,$billingcity,$billingstate,$billingzip,$sendername,$senderaddress,$sendercity,$senderstate,$ssenderzip,$duedate,$invoicedate,$status,$lastupdated,$comment)) {
-        echo "<div class='error'>Binding results failed: (" . $stmt->errno . ") " . $stmt->error. "</div>";
+        echo "Binding results failed: (" . $stmt->errno . ") " . $stmt->error. "";
     }    
     
     $invoicearray = array();
@@ -541,15 +575,15 @@ function getInvoicesByBilltoID($billtoid){
                                     WHERE status > 0 AND billtoid = ?
                                     GROUP BY inv.invoiceid, c.name, duedate, invoicedate, status, lastupdated
                                     ORDER BY lastupdated;"))){
-        echo "<div class='error'>Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error. "</div>";
+        echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error. "";
     }
     
     if (!$stmt->bind_param("i", $billtoid)) {
-        echo "<div class='error'>Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error. "</div>";
+        echo "Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error. "";
     }
 
     if (!$stmt->execute()) {
-        echo "<div class='error'>Execute failed: (" . $stmt->errno . ") " . $stmt->error. "</div>";
+        echo "Execute failed: (" . $stmt->errno . ") " . $stmt->error. "";
     }   
 
     $invoiceid = null;
@@ -563,7 +597,7 @@ function getInvoicesByBilltoID($billtoid){
     
     
     if (!$stmt->bind_result($invoiceid,$sendername,$duedate,$invoicedate,$status,$lastupdated,$total)) {
-        echo "<div class='error'>Binding results failed: (" . $stmt->errno . ") " . $stmt->error. "</div>";
+        echo "Binding results failed: (" . $stmt->errno . ") " . $stmt->error. "";
     }    
     
     $invoicearray = array();
@@ -599,15 +633,15 @@ function getInvoicesBySenderID($senderid){
                                     WHERE senderid = ?
                                     GROUP BY inv.invoiceid, c.name, duedate, invoicedate, status, lastupdated
                                     ORDER BY lastupdated;"))){
-        echo "<div class='error'>Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error. "</div>";
+        echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error. "";
     }
     
     if (!$stmt->bind_param("i", $senderid)) {
-        echo "<div class='error'>Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error. "</div>";
+        echo "Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error. "";
     }
 
     if (!$stmt->execute()) {
-        echo "<div class='error'>Execute failed: (" . $stmt->errno . ") " . $stmt->error. "</div>";
+        echo "Execute failed: (" . $stmt->errno . ") " . $stmt->error. "";
     }   
 
     $invoiceid = null;
@@ -621,7 +655,7 @@ function getInvoicesBySenderID($senderid){
     
     
     if (!$stmt->bind_result($invoiceid,$billtoname,$duedate,$invoicedate,$status,$lastupdated,$total)) {
-        echo "<div class='error'>Binding results failed: (" . $stmt->errno . ") " . $stmt->error. "</div>";
+        echo "Binding results failed: (" . $stmt->errno . ") " . $stmt->error. "";
     }    
     
     $invoicearray = array();
@@ -644,18 +678,18 @@ function getCompanyNames(){
     
     if(!($stmt = $mysqli->prepare("SELECT companyid, name FROM $db.company
                                    ORDER BY name;"))){
-        echo "<div class='error'>Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error. "</div>";
+        echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error. "";
     }
 
     if (!$stmt->execute()) {
-        echo "<div class='error'>Execute failed: (" . $stmt->errno . ") " . $stmt->error. "</div>";
+        echo "Execute failed: (" . $stmt->errno . ") " . $stmt->error. "";
     }   
 
     $companyname = null;
     $companyid = null;
     
     if (!$stmt->bind_result($companyid, $companyname )) {
-        echo "<div class='error'>Binding results failed: (" . $stmt->errno . ") " . $stmt->error. "</div>";
+        echo "Binding results failed: (" . $stmt->errno . ") " . $stmt->error. "";
     }    
     
     $companyarray = array();
@@ -678,21 +712,21 @@ function getCompanyNamebyUsername($username){
                                    LEFT JOIN $db.user 
                                    ON $db.company.userid = $db.user.userid
                                    WHERE username = ?"))){
-        echo "<div class='error'>Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error. "</div>";
+        echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error. "";
     }
 
     if (!$stmt->bind_param("s", $username)) {
-        echo "<div class='error'>Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error. "</div>";
+        echo "Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error. "";
     }
 
     if (!$stmt->execute()) {
-        echo "<div class='error'>Execute failed: (" . $stmt->errno . ") " . $stmt->error. "</div>";
+        echo "Execute failed: (" . $stmt->errno . ") " . $stmt->error. "";
     }   
 
     $companyname= null;
     
     if (!$stmt->bind_result($companyname )) {
-        echo "<div class='error'>Binding results failed: (" . $stmt->errno . ") " . $stmt->error. "</div>";
+        echo "Binding results failed: (" . $stmt->errno . ") " . $stmt->error. "";
     }    
     
     while($stmt->fetch()){
@@ -712,21 +746,21 @@ function getCompanyIDbyUsername($username){
                                    LEFT JOIN $db.user 
                                    ON $db.company.userid = $db.user.userid
                                    WHERE username = ?"))){
-        echo "<div class='error'>Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error. "</div>";
+        echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error. "";
     }
 
     if (!$stmt->bind_param("s", $username)) {
-        echo "<div class='error'>Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error. "</div>";
+        echo "Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error. "";
     }
 
     if (!$stmt->execute()) {
-        echo "<div class='error'>Execute failed: (" . $stmt->errno . ") " . $stmt->error. "</div>";
+        echo "Execute failed: (" . $stmt->errno . ") " . $stmt->error. "";
     }   
 
     $companyid= null;
     
     if (!$stmt->bind_result($companyid )) {
-        echo "<div class='error'>Binding results failed: (" . $stmt->errno . ") " . $stmt->error. "</div>";
+        echo "Binding results failed: (" . $stmt->errno . ") " . $stmt->error. "";
     }    
     
     while($stmt->fetch()){
@@ -738,6 +772,54 @@ function getCompanyIDbyUsername($username){
     return $companyid;      
     
 }
+
+function getCompanySettingsbyUsername($username){
+    global $mysqli;
+    global $db;
+    
+    if(!($stmt = $mysqli->prepare("SELECT companyid, name, streetaddress, city, state, zip  
+                                   FROM $db.company 
+                                   LEFT JOIN $db.user 
+                                   ON $db.company.userid = $db.user.userid
+                                   WHERE username = ?"))){
+        echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error. "";
+    }
+
+    if (!$stmt->bind_param("s", $username)) {
+        echo "Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error. "";
+    }
+
+    if (!$stmt->execute()) {
+        echo "Execute failed: (" . $stmt->errno . ") " . $stmt->error. "";
+    }   
+
+    $companyid = null;
+    $name = null;
+    $streetaddress = null;
+    $city = null;
+    $state = null;
+    $zip = null;
+    
+    if (!$stmt->bind_result($companyid, $name, $streetaddress, $city, $state, $zip )) {
+        echo "Binding results failed: (" . $stmt->errno . ") " . $stmt->error. "";
+    }    
+
+    while($stmt->fetch()){
+        $company = [
+            'companyid' => $companyid,
+            'name' => $name,
+            'streetaddress' => $streetaddress,
+            'city' => $city,
+            'state' => $state,
+            'zip' => $zip
+            ];
+        }
+
+    unset($stmt);
+    
+    return $company;      
+    
+}
   
 
 function getUserIDbyUsername($username){
@@ -746,21 +828,21 @@ function getUserIDbyUsername($username){
     global $db;
 
     if(!($stmt  = $mysqli->prepare("SELECT userid FROM $db.user where username = ?"))){
-        echo "<div class='error'>Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error. "</div>";
+        echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error. "";
     }
 
     if (!$stmt->bind_param("s", $username )) {
-        echo "<div class='error'>Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error. "</div>";
+        echo "Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error. "";
     } 
     
     if (!$stmt->execute()) {
-        echo "<div class='error'>Execute failed: (" . $mysqli->errno . ") " . $mysqli->error. "</div>";
+        echo "Execute failed: (" . $mysqli->errno . ") " . $mysqli->error. "";
     } 
     
     $userid = NULL;
     
     if (!$stmt->bind_result($userid )) {
-        echo "<div class='error'>Binding results failed: (" . $stmt->errno . ") " . $stmt->error. "</div>";
+        echo "Binding results failed: (" . $stmt->errno . ") " . $stmt->error. "";
     }      
     
     $sessionuserid = NULL;
@@ -780,15 +862,15 @@ function usernameExists($username){
     global $db;
     
     if(!($stmt = $mysqli->prepare("SELECT username FROM $db.user WHERE username = ?"))){
-        echo "<div class='error'>Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error. "</div>";
+        echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error. "";
     }
 
     if (!$stmt->bind_param("s", $username)) {
-        echo "<div class='error'>Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error. "</div>";
+        echo "Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error. "";
     }
 
     if (!$stmt->execute()) {
-        echo "<div class='error'>Execute failed: (" . $stmt->errno . ") " . $stmt->error. "</div>";
+        echo "Execute failed: (" . $stmt->errno . ") " . $stmt->error. "";
     }   
     
     $stmt->store_result();
@@ -807,15 +889,15 @@ function companyExists($companyname){
     global $db;
     
     if(!($stmt = $mysqli->prepare("SELECT name FROM $db.company WHERE name = ?"))){
-        echo "<div class='error'>Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error. "</div>";
+        echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error. "";
     }
 
       if (!$stmt->bind_param("s", $companyname)) {
-        echo "<div class='error'>Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error. "</div>";
+        echo "Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error. "";
     }
 
     if (!$stmt->execute()) {
-        echo "<div class='error'>Execute failed: (" . $stmt->errno . ") " . $stmt->error. "</div>";
+        echo "Execute failed: (" . $stmt->errno . ") " . $stmt->error. "";
     }   
     
     $stmt->store_result();
@@ -830,49 +912,92 @@ function companyExists($companyname){
 }
     //Update
     
-function setInvoiceStatus($invoiceid, $newstatus){
+function updateCompany($companyid, $companyname,  $streetaddress, $city, $state, $zip){
     global $mysqli;
     global $db;
+    
     if (!$mysqli || $mysqli->connect_error) {
-            echo "<div class='error'>Connection error " .$mysqli->connect_error. " " .$mysqli->connect_error. "</div>";
+            exit("Connection error " .$mysqli->connect_error. " " .$mysqli->connect_error. "");
+    } 
+    if(!($stmt = $mysqli->prepare("UPDATE $db.company SET 
+                                    name = ?
+                                    , streetaddress = ?
+                                    , city = ?
+                                    , state = ?
+                                    , zip = ?
+                                    WHERE companyid = ?
+                                    "))){
+        exit("Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error. "");
+    }
+    
+    if (!$stmt->bind_param("sssssi", $companyname, $streetaddress, $city, $state, $zip, $companyid)) {
+        exit("Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error. "");
     } 
     
-    if(!($stmt = $mysqli->prepare("UPDATE $db.invoice SET status = ? WHERE invoiceid = ?"))){
-        echo "<div class='error'>Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error. "</div>";
-    }
-    
-    if (!$stmt->bind_param("ii", $newstatus, $invoiceid)) {
-        echo "<div class='error'>Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error. "</div>";
-    }   
-    
     if (!$stmt->execute()) {
-        echo "<div class='error'>Execute failed: (" . $stmt->errno . ") " . $stmt->error. "</div>";
+        exit("Execute failed: (" . $stmt->errno . ") " . $stmt->error. "");
     }
     
-    $userid = $stmt->insert_id;
+    $affectedrows = $stmt->affected_rows;
     
     unset($stmt);
     
-    return $userid;    
+    return $affectedrows;
+}
+    
+function setInvoiceStatus($invoiceid, $requestedstatus){
+    global $mysqli;
+    global $db;
+    
+    $currentstatus = getInvoiceStatus($invoiceid);
+
+    if(+$requestedstatus <= +$currentstatus){
+        return $currentstatus;
+    }
+    
+    if (!$mysqli || $mysqli->connect_error) {
+            echo "Connection error " .$mysqli->connect_error. " " .$mysqli->connect_error. "";
+    } 
+    
+    if(!($stmt = $mysqli->prepare("UPDATE $db.invoice SET status = ? WHERE invoiceid = ?"))){
+        echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error. "";
+    }
+    
+    if (!$stmt->bind_param("ii", $requestedstatus, $invoiceid)) {
+        echo "Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error. "";
+    }   
+    
+    if (!$stmt->execute()) {
+        echo "Execute failed: (" . $stmt->errno . ") " . $stmt->error. "";
+    }
+
+    if($stmt->affected_rows > 0 ){
+        
+        
+    unset($stmt);
+    
+    return $requestedstatus;    
+    }
+    return $currentstatus;
 }
 
 function updateItem($itemid, $invoiceid, $description, $amount){
     global $mysqli;
     global $db;
     if (!$mysqli || $mysqli->connect_error) {
-            echo "<div class='error'>Connection error " .$mysqli->connect_error. " " .$mysqli->connect_error. "</div>";
+            echo "Connection error " .$mysqli->connect_error. " " .$mysqli->connect_error. "";
     } 
     
     if(!($stmt = $mysqli->prepare("UPDATE $db.item SET invoiceid = ?, description = ?, amount = ? WHERE itemid = ?"))){
-        echo "<div class='error'>Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error. "</div>";
+        echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error. "";
     }
     
     if (!$stmt->bind_param("isdi", $invoiceid, $description, $amount, $itemid)) {
-        echo "<div class='error'>Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error. "</div>";
+        echo "Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error. "";
     }   
     
     if (!$stmt->execute()) {
-        echo "<div class='error'>Execute failed: (" . $stmt->errno . ") " . $stmt->error. "</div>";
+        echo "Execute failed: (" . $stmt->errno . ") " . $stmt->error. "";
     }
     
     $userid = $stmt->insert_id;
@@ -890,7 +1015,7 @@ function updateInvoice($invoiceid, $senderid, $billtoid, $invoicedate, $duedate,
     //check if invoice exists.  
     
     if (!$mysqli || $mysqli->connect_error) {
-            echo "<div class='error'>Connection error " .$mysqli->connect_error. " " .$mysqli->connect_error. "</div>";
+            echo "Connection error " .$mysqli->connect_error. " " .$mysqli->connect_error. "";
     } 
     
     if(!($stmt = $mysqli->prepare("UPDATE $db.invoice 
@@ -903,15 +1028,15 @@ function updateInvoice($invoiceid, $senderid, $billtoid, $invoicedate, $duedate,
                                     , lastupdated = NOW()
                                     WHERE invoiceid = ?
                                     "))){
-        echo "<div class='error'>Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error. "</div>";
+        echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error. "";
     }
     
     if (!$stmt->bind_param("iisssi", $senderid, $billtoid, $invoicedate, $duedate, $comment, $invoiceid)) {
-        echo "<div class='error'>Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error. "</div>";
+        echo "Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error. "";
     }   
     
     if (!$stmt->execute()) {
-        echo "<div class='error'>Execute failed: (" . $stmt->errno . ") " . $stmt->error. "</div>";
+        echo "Execute failed: (" . $stmt->errno . ") " . $stmt->error. "";
     }
     
     $invoiceid = $stmt->insert_id;
@@ -956,15 +1081,15 @@ function usernameAndPasswordInDB($username, $password, $mysqli, $db) {
     $hashpass = trim(base64_encode(hash('sha256',$_POST['password'])));
 
     if(!($stmt = $mysqli->prepare("SELECT username FROM $db.user WHERE username = ? AND hashpass = ?"))){
-        echo "<div class='error'>Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error. "</div>";
+        echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error. "";
     }
 
     if (!$stmt->bind_param("ss", $username, $hashpass )) {
-        echo "<div class='error'>Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error. "</div>";
+        echo "Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error. "";
     }
 
     if (!$stmt->execute()) {
-        echo "<div class='error'>Execute failed: (" . $stmt->errno . ") " . $stmt->error. "</div>";
+        echo "Execute failed: (" . $stmt->errno . ") " . $stmt->error. "";
     }   
     
     $stmt->store_result();

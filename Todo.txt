@@ -6,7 +6,8 @@
 -change overview to accounts receivable(done)
 -change Received to accounts payable(done)
 -click save and there is no indication that it saved
--make so that sending an already paid invoice doesn't resend.   
+-make so that sending an already paid invoice doesn't resend.  
+-make it so that dates are pacific not utc
 
 ***Libraries
 Using date picker library https://github.com/dbushell/Pikaday

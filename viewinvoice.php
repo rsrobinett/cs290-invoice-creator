@@ -44,7 +44,7 @@ $total = getInvoiceTotalByInvoiceIDandBilltoUsername($_GET['invoiceid'],$_SESSIO
         <address>
             <strong><?php echo $invoice[0]['billto']['name']; ?></strong>
             <br> <?php echo $invoice[0]['billto']['address']; ?> 
-            <br><?php echo $invoice[0]['billto']['city'].", ".$invoice[0]['sender']['state']." ".$invoice[0]['sender']['zip']; ?>
+            <br><?php echo $invoice[0]['billto']['city'].", ".$invoice[0]['billto']['state']." ".$invoice[0]['billto']['zip']; ?>
             <br>
         </address>
         <p>

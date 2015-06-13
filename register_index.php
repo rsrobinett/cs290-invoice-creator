@@ -103,7 +103,7 @@ if(isset($_SESSION['username']) && (!isset($_GET['action']))){
                         </select>
                 </div>
                 <div class="form-group">
-                    <input type="number" class="form-control" placeholder="Zipcode" id="zip" name="zip" min="5" max="5" required>
+                    <input type="number" class="form-control" placeholder="Zipcode" id="zip" name="zip" min="10000" max="99999" required>
                 </div>                
                 <input type="submit" class="btn btn-primary block full-width m-b" value="Register">
 

@@ -12,6 +12,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } 
     if(isset($_POST['username'])){
         $username = $_POST['username'];
+    } else if(isset($_SESSION['username'])){
+        $username = $_SESSION['username'];
     }
     if(isset($_POST['password']))
     {
@@ -82,22 +84,49 @@ if (isset($action) && ($action === 'register')) {
 }
 
 if(isset($action) && ($action === 'login')){
+    
+    $errormsg="";
+    
     if (empty($username))
     {
-        exit('Username cannot be empty');
+        $errormsg = $errormsg."Username cannot be empty";
     }
     if (empty($password)) 
     {
-        exit('Password cannot be empty');
+        $errormsg = $errormsg."Password cannot be empty";
     }
     
-    if (usernameAndPasswordInDB($username, $password, $mysqli, $db))
-    {
-        $_SESSION['username'] = $username;
-        exit('success');
-    } else {
-        exit('The username and password that you entered are not correct or you are not registerd');
-    } 
+    if(empty($errormsg)){
+        if (usernameAndPasswordInDB($username, $password, $mysqli, $db))
+        {
+            $_SESSION['username'] = $username;
+            exit('success');
+            } else {
+            exit('The username and password that you entered are not correct or you are not registerd');
+        } 
+    }
+    
+    exit($errormsg);
+}
+
+if(isset($action) && ($action==='updatesettings')){
+    $errormsg="";
+        //check if companyname exits
+    if(companyExists($companyname) && !getCompanyNamebyUsername($username) === $companyname){
+        $errormsg = $errormsg."This company name ($companyname) is already taken please choose another company name.  ";
+    }
+    
+    if(empty($errormsg)){
+        $companyid = getCompanyIDbyUsername($username);
+        $recordsUpdated = updateCompany($companyid, $companyname, $streetaddress, $city, $state, $zip);
+        //if($recordsUpdated>0){
+            exit("saved");
+        //}
+        $errormsg = $errormsg."Your settings have not been updated completely, please check your inputs and try again. ";
+    }
+    
+     exit($errormsg);
+    
 }
 
 exit('You have made an invalid request to the Server');
